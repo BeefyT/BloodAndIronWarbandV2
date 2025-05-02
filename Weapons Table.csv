@@ -1,0 +1,62 @@
+Finalized,Weapon Name,Cost,Combat Power,Weapon Keywords,Unit Restrictions Keywords,Faction Specific
+true,Bolt Rifle,8,3,"Steady,Anti-Infantry (AIF),Long Range","Line Infantry,Shock Trooper,Skirmisher,Marksmen,Support,Gunner,Summoner,Ironclad,Eldritch,Hallowed,Operative",
+true,Assault Pistol,8,2,"Rapid Rife,Close Range,Supressive,Anti-Infantry (AIF)","Shock Trooper,Skirmisher,Operative",
+true,Heavy Machine Gun,17,4,"Long Range,Rapid Rife,Deployed,Supressive,Spray(2)","Gunner,Ironclad",
+true,Submachine Gun,12,4,"Rapid Rife,Close Range,Anti-Infantry (AIF),Spray(2)","Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner",
+true,Long Rifle,11,3,"Long Range,Steady,AP(1),Anti-Infantry (AIF)","Marksmen,Operative",
+true,Revolver,9,3,"AP(1),Close Range,Savage(1),Anti-Infantry (AIF)","Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Ironclad",
+true,Pistol,2,2,"Close Range,Anti-Infantry (AIF)","Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Ironclad",
+true,Storm Rifle,15,4,"Rapid Rife,Supressive,Spray(2),Anti-Infantry (AIF),Unwieldy","Shock Trooper,Gunner,Operative,Ironclad",
+true,Autocannon,13,4,"Long Range,Deployed,Anti-Infantry (AIF),Explosive,AP(1)","Gunner,Ironclad",
+true,Trenchgun,9,3,"Close Range,Template (Cone),Anti-Infantry (AIF),Knockback","Shock Trooper,Skirmisher,Operative",
+true,Flamethrower,9,3,"Close Range,Template (Cone),Anti-Infantry (AIF),Burn,Overheat (2)","Shock Trooper,Gunner,Ironclad",
+true,Light Rocket Launcher,18,4,"Long Range,Explosive,Template (Circle),Reload,Anti-mechanized (AM),AP(2)","Line Infantry,Shock Trooper,Skirmisher,Gunner,Ironclad",
+true,Heavy Rocket Launcher,21,4,"AP(3),Long Range,Explosive,Template (Circle),Reload,Anti-mechanized (AM)","Gunner,Ironclad",
+true,Grenade Launcher (Explosive),9,3,"Long Range,Unwieldy,Explosive,Targetless,Template (Circle),Reload,Anti-Infantry (AIF)","Line Infantry,Shock Trooper,Skirmisher,Gunner,Ironclad",
+true,Grenade Launcher (Toxic),11,3,"Long Range,Unwieldy,Explosive,Targetless,Template (Circle),Stun(Organic),Reload,Anti-Infantry (AIF),Non-Lethal","Shock Trooper,Line Infantry,Skirmisher,Gunner,Ironclad",
+true,Grenade Launcher (Poison),12,3,"Long Range,Unwieldy,Explosive,Targetless,Template (Circle),Reload,Anti-Infantry (AIF),Posion","Line Infantry,Shock Trooper,Skirmisher,Gunner,Ironclad",
+true,Bayonet,12,3,"Melee,Reach,Charge","Line Infantry,Shock Trooper,Skirmisher,Operative,Melee Specialist",
+true,Greatsword,15,4,"Colossal,Brutal,Reach,Savage(1),Melee,Two Handed","Melee Specialist,Ironclad",
+true,Longsword,11,3,"Melee,Parry",Line Infantry,
+true,Gauss Rifle,21,3,"AP(2),Steady,Lock","Marksmen,Gunner,Ironclad",
+true,Arc Rifle,17,4,"Close Range,Stun(Organic),Arc (2),Overheat (3)","Support,Ironclad,Shock Trooper",
+true,Trench Club,13,3,"Melee,Brutal,Stun(Organic)","Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Melee Specialist",
+true,Entrenching Tool,15,3,"Melee,Parry,Bleed,Shove","Line Infantry,Shock Trooper,Skirmisher,Gunner",
+true,Bowie Knife,12,2,"Melee,Silenced,Savage(1),Backstab(1)","Shock Trooper,Operative",
+true,Knuckle Dusters,14,3,"Shove,Charge,Brutal,Melee","Line Infantry,Shock Trooper",
+true,Pickaxe,16,4,"Two Handed,Brutal,AP(2),Unwieldy,Melee","Line Infantry,Gunner,Support",
+true,Barbwire Whip,12,2,"Bleed,Hooked,Reach,Melee","Skirmisher,Operative,Support",
+true,Axe,15,4,"AP(1),Two Handed,Melee,Cleave","Shock Trooper,Skirmisher",
+false,Trench Pike,9,3,"Two Handed,Colossal,Reach,Melee",Line Infantry,
+true,Poleaxe,15,3,"Two Handed,Reach,AP(2),Brutal,Melee",Melee Specialist,
+true,Halberd,13,4,"Cleave,Two Handed,Reach,Melee",Melee Specialist,
+true,Macuahuitl,14,3,"Bleed,Brutal,Savage(1),Melee",Melee Specialist,
+true,Serpent’s Fang,17,2,"Ritual,Swift,Posion,Savage(1),Bleed","Operative,Summoner,Melee Specialist,Eldritch",
+true,Spineblade,23,4,"Melee,Syphon,Purge","Eldritch,Hallowed,Melee Specialist",
+true,Soulsplint Chakrams,24,3,"Returning,Swift,Bleed,Arc (2)","Eldritch,Melee Specialist",
+true,Trench Spear,13,3,"Reach,Shove,Melee,AP(1)","Line Infantry,Shock Trooper,Skirmisher",
+true,Trench Sweeper,10,4,"Close Range,Anti-Infantry (AIF),Spray(3)","Gunner,Ironclad",
+true,Ripper Sawblade,14,4,"Brutal,Bleed,Two Handed,Melee","Melee Specialist,Ironclad",
+true,Gilded Bolt Rifle,11,3,"Steady,Long Range,Anti-Infantry (AIF),Smite","Marksmen,Operative",Church of the Martyr
+true,Sanctified Autocannon,13,4,"Long Range,Deployed,AP(1),Anti-Infantry (AIF),Smite","Gunner,Ironclad",Church of the Martyr
+true,Spear of Saint Varro,27,4,"Melee,Reach,Smite,AP(2),Purge","Hallowed,Melee Specialist",Church of the Martyr
+true,Saints Blood Maul,16,3,"Melee,Smite,Brutal,Stun(Eldritch)","Hallowed,Melee Specialist",Church of the Martyr
+true,Purifyer,14,3,"Close Range,Template (Cone),Burn,Overheat (3),Smite","Shock Trooper,Gunner,Ironclad",Church of the Martyr
+false,Martyr’s Blade,19,4,"Melee,Savage(2),Syphon","Melee Specialist,Hallowed",Church of the Martyr
+true,Judge’s Pistol,20,3,"Close Range,AP(2),Purge","Shock Trooper,Operative,Hallowed",Church of the Martyr
+true,Xotec’s Twin Fangs,20,3,"Melee,Swift,Syphon,Posion","Operative,Summoner,Melee Specialist",Xiuhcoatl
+true,Sun Eater Maw,14,4,"Long Range,Beam,Burn,Overheat (4),Ritual","Gunner,Ironclad,Eldritch",Xiuhcoatl
+true,Tezcatlipoca’s Gaze,18,3,"Close Range,Arc (2),Stun(Organic),Ritual","Summoner,Eldritch,Vyled,Shock Trooper",Xiuhcoatl
+false,Soulshard Caster,22,3,"Arc (2),Ritual,Syphon","Summoner,Eldritch,Operative",Xiuhcoatl
+false,Chained Wraithstone,15,3,"Returning,Stun(Organic)","Summoner,Eldritch,Operative",Xiuhcoatl
+false,Blacksun Crystal,13,3,"Beam,Burn,Overheat (3),Ritual","Gunner,Eldritch",Xiuhcoatl
+false,Soulshard Splinter,15,3,"Arc (2),Ritual,Close Range","Line Infantry,Shock Trooper,Skirmisher,Summoner",Xiuhcoatl
+false,Soulpyre Spout,16,3,"Burn,Template (Cone),Ritual","Line Infantry,Shock Trooper",Xiuhcoatl
+false,Tzitzimime’s Claws,17,2,"Returning,Stun(Organic),Savage(2),Bleed","Skirmisher,Summoner,Support",Xiuhcoatl
+false,Spirit Bow,16,3,"Steady,AP(1),Ritual","Line Infantry,Marksmen",Xiuhcoatl
+false,Crone’s Bone,15,2,"Bleed,Melee,Ritual,Silenced,AP(1)","Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Melee Specialist",Xiuhcoatl
+false,Ocelotl’s claws,19,3,"Swift,Melee,Silenced,Savage(2),Bleed","Shock Trooper,Melee Specialist,Skirmisher",Xiuhcoatl
+false,Grand Itztli,18,4,"Melee,Colossal,Two Handed,Cleave,Reach,Savage(3)","Melee Specialist,Eldritch",Xiuhcoatl
+false,Itzli,12,3,"Melee,Parry,Savage(1)","Line Infantry,Shock Trooper,Skirmisher,Support,Operative,Summoner,Melee Specialist",Xiuhcoatl
+false,,0,,,,
+false,,0,,,,

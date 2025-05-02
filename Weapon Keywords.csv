@@ -1,0 +1,77 @@
+Name,Cost,Description
+Steady,3,This weapon gains +1 CP if the user did not move during this activation.
+AP(1),3,This weapon reduces the target's Armor by 1
+AP(2),6,This weapon reduces the target's Armor by 2
+AP(3),9,This weapon reduces the target's Armor by 3
+Rapid Rife,3,This weapon may re-roll one failed roll. The new result must be kept.
+Long Range,-1,Attacks within 8 inches suffer -1 CP
+Close Range,-1,Attacks outside of 8 inches suffer a -1 CP
+Unwieldy,-1,This weapon suffers -1 CP if the user moved this turn.
+Explosive,3,"On a successful attack, all units within the template (circle) of the target are hit with half the original attack's CP"
+Targetless,1,This weapon can target an area within range instead of a unit. Attacks made out of line of sight suffer a -1 Competency.
+Deployed,-1,Firing this weapon requires a deployment action.
+Beam,3,This weapon fires a 1in straight beam; all units in its path take a hit. Terrain blocks the line of fire
+Template (Cone),3,All units within the template take a hit.
+Template (Circle),3,All units within the template take a hit.
+Supressive,3,"When this weapon hits an enemy, they must make a Willpower check. On failure, they drop 1 Morale Level. If they are already Broken, they must retreat 6 inches toward cover."
+Arc (1),3,"If this attack hits, it arcs to hit up to 1 other units within 2 inches. These secondary attacks must be rolled as normal"
+Arc (2),6,"If this attack hits, it arcs to hit up to 2 other units within 2 inches. These secondary attacks must be rolled as normal"
+Arc (3),9,"If this attack hits, it arcs to hit up to 3 other units within 2 inches. These secondary attacks must be rolled as normal"
+Silenced,3,"When attacking in the back arc of a unit, gain +1 CP"
+Stun(Organic),3,"On a successful hit, the target must make a Resilience check. On a failure, they must choose between moving OR taking an action on their next activation (not both). This effect only applies to organic targets."
+Stun(Mechanical),3,"On a successful hit, the target must make a Resilience check. On a failure, they must choose between moving OR taking an action on their next activation (not both). This effect only applies to mechanical targets."
+Stun(Eldritch),3,"On a successful hit, the target must make a Resilience check. On a failure, they must choose between moving OR taking an action on their next activation (not both). This effect only applies to eldritch targets."
+Stun(Holy),3,"On a successful hit, the target must make a Resilience check. On a failure, they must choose between moving OR taking an action on their next activation (not both). This effect only applies to holy targets."
+Reload,-2,"After every attack, this weapon requires an action to reload before it can be fired again."
+Charge Up,1,"The user may attempt a Charge-Up roll before attacking. Roll a D10: On a roll of 1, the user is hit by the weapon. On any other result, the weapon gains +1 CP for the next attack. This can be done up to 3 times in a row, with each successive attempt increasing the chance of failure. For the second roll, a 1 or 2 results in the user being hit. For the third roll, a 1, 2, or 3 results in the user being hit. Successfully charging up to 3 times grants a total of +3 CP for the attack."
+Overheat (1),-1,"After attacking, roll a D10. On a roll above 1, the weapon overheats, and the user cannot use it during their next activation."
+Overheat (2),-2,"After attacking, roll a D10. On a roll above 2, the weapon overheats, and the user cannot use it during their next activation."
+Overheat (3),-3,"After attacking, roll a D10. On a roll above 3, the weapon overheats, and the user cannot use it during their next activation."
+Overheat (4),-4,"After attacking, roll a D10. On a roll above 4, the weapon overheats, and the user cannot use it during their next activation."
+Overheat (5),=5,"After attacking, roll a D10. On a roll above 5, the weapon overheats, and the user cannot use it during their next activation."
+EMP,3,"On a successful hit on a unit with the mechanized tag, the target must make a Competency check. On a failure, the unit can only either move or take an action on its next activation, not both"
+Lock,3,"When this weapon hits a mech, the target must make a Competency check. On a failure, the mech becomes ""Locked"" and cannot move during its next activation. It can still perform other actions, such as attacking or using non-movement abilities"
+Beacon,1,"When this weapon hits a unit, place a ""Targeted"" token on the target. While the target has this token, all attacks with the ""Guided"" trait gain +1 CP against it. The ""Targeted"" token remains until the target unit spends an action to remove it."
+Guided,3,"Gain +1 CP against targets marked with a ""Targeted"" token."
+Anti-mechanized (AM),-3,This weapon uses half its CP when attacking units with the [infantry] keyword.
+Anti-Infantry (AIF),-3,This weapon uses half its CP when attacking units with the [mechanical] keyword.
+Melee,-1,This weapon is a melee weapon and can only be used in close combat
+Non-Lethal,-1,"Before rolling for the attack, the unit declares the use of Non-Lethal. Resolve the attack as normal. If the total wounds dealt would kill the target, the target is instead knocked unconscious."
+Savage(1),1,Increase the weapon’s critical range by 1.
+Savage(2),2,Increase the weapon’s critical range by 2.
+Savage(3),3,Increase the weapon’s critical range by 3.
+Parry,3,"When using this weapon, gain +1 competency when defending reactively in melee"
+Reach,1,This weapon can attack units within 2in instead of requiring base to base contact
+Brutal,2,"Gain +1 CP on melee, but suffer -1 competency in melee"
+Colossal,2,"Gain +1 CP in melee, but the unit is unable to take reactions using this weapon"
+Charge,3,Gain +1 CP when this weapon is used in melee immediately after the unit performs a Move action.
+Burn,3,Applies a Burn Token on the targeted unit.
+Posion,3,Applies a poison token on the targeted unit
+Spray(2),1,This weapon can split its CP across up to 2 targets within range. CP is allocated before rolling any attacks.
+Spray(3),2,This weapon can split its CP across up to 3 targets within range. CP is allocated before rolling any attacks.
+Spray(4),3,This weapon can split its CP across up to 4 targets within range. CP is allocated before rolling any attacks.
+Two Handed,-2,This weapon takes up two weapon slots
+Riposte,6,This weapon allows for a single free attack against a melee attacker that deals no damage.
+Hooked,3,"If this weapon hits, the target must pass a Resilience check or be repositioned 2 inches."
+Shockwave,3,"On a successful hit, all other melee combatants take a 1/2 weapon CP hit"
+Syphon,6,"If this weapon kills an enemy, the wielder regains 1 wound"
+Swift,3,"After attacking, this weapon allows the wielder to move again."
+Returning,3,This melee weapon is able to be thrown 8in. Resolve the attack as a melee attack. The weapon returns back to the user.
+Purge,6,Ignores armor when attacking enemies with the Eldritch keyword.
+Smite,3,Gain +1 CP when targeting units with the Eldritch keyword
+Vorpal,9,Ignores all armor when attacking
+Shove,1,"After dealing damage, push the targeted unit back 2in"
+Bleed,3,"When this weapon deals damage, the target suffers 1 damage at the start of their next activation unless they take an action to stop the bleeding."
+Cleave,3,"If this weapon kills a unit, the attacker may make a free melee attack on another adjacent target with half CP"
+Defensive,3,"If the wielder has not moved, gain +1 armor in melee"
+Ritual,1,"When this weapon deals damage, gain +1 ritual token"
+Non-Lethal,1,"When this weapon drops a target to 0 wounds, the target is unconscious not killed."
+Knockback,1,"On a hit, the target is pushed back 2 inches."
+Backstab(1),3,"When attacking in the back arc of a unit, this weapon gains ignores 1 point of armor"
+Backstab(2),6,"When attacking in the back arc of a unit, this weapon gains ignores 2 point of armor"
+Backstab(3),9,"When attacking in the back arc of a unit, this weapon gains ignores 3 point of armor"
+Carnage,1,"If this weapon kills a unit, all enemy units within 6 inches must make a Willpower check. On failure, they drop 1 Morale Level."
+Terror (1),1,"When this weapon hits, the target suffers -1 to their next Morale Check (stacks up to -3). Does not cause an immediate Willpower test, but makes the next one harder to pass."
+Terror (2),2,"When this weapon hits, the target suffers -2 to their next Morale Check (stacks up to -3). Does not cause an immediate Willpower test, but makes the next one harder to pass."
+Terror (3),3,"When this weapon hits, the target suffers -3 to their next Morale Check (stacks up to -3). Does not cause an immediate Willpower test, but makes the next one harder to pass."
+Panic,6,"If this weapon causes a unit to drop to Broken, that unit immediately moves its full movement away from the attacker instead of just seeking cover."
