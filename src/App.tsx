@@ -3,9 +3,11 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from 'react-router-dom'
 import FactionSelectionPage from './pages/FactionSelectionPage'
 import ListBuilderPage from './pages/ListBuilderPage'
+import PlayModePage from './pages/PlayModePage'
 import { useAppStore } from './pages/store'
 import './App.css'
 import LoadDialog from './components/LoadDialog'
@@ -13,6 +15,7 @@ import SaveDialog from './components/SaveDialog'
 
 function Header() {
   const location = useLocation()
+  const navigate = useNavigate()
   const {
     currentWarband,
     toggleSaveDialog,
@@ -47,6 +50,14 @@ function Header() {
             >
               Save
             </button>
+            <button
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-purple-600 rounded hover:bg-purple-700 text-white text-sm sm:text-base"
+              onClick={() => navigate('/play')}
+              disabled={!currentWarband || currentWarband.units.length === 0}
+              aria-label="Play mode"
+            >
+              Play
+            </button>
           </div>
         )}
       </div>
@@ -67,6 +78,7 @@ function App() {
           <Routes>
             <Route path="/" element={<FactionSelectionPage />} />
             <Route path="/builder" element={<ListBuilderPage />} />
+            <Route path="/play" element={<PlayModePage />} />
           </Routes>
         </main>
       </div>
