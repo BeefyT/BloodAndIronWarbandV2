@@ -22,6 +22,8 @@ interface AppState {
   isWarbandEditor: boolean
   isLoadDialogOpen: boolean
   isSaveDialogOpen: boolean
+  isImportDialogOpen: boolean
+  isExportDialogOpen: boolean
 
   // Actions
   selectFaction: (factionId: string) => void
@@ -38,6 +40,9 @@ interface AppState {
   deleteWarband: (warbandId: string) => void
   toggleLoadDialog: () => void
   toggleSaveDialog: () => void
+  toggleImportDialog: () => void
+  toggleExportDialog: () => void
+  importWarbandFromImport: (warband: Warband) => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -53,6 +58,8 @@ export const useAppStore = create<AppState>()(
       isWarbandEditor: false,
       isLoadDialogOpen: false,
       isSaveDialogOpen: false,
+      isImportDialogOpen: false,
+      isExportDialogOpen: false,
 
       // Actions
       selectFaction: (factionId: string) => {
@@ -229,6 +236,8 @@ export const useAppStore = create<AppState>()(
         set((state) => ({
           isLoadDialogOpen: !state.isLoadDialogOpen,
           isSaveDialogOpen: false,
+          isImportDialogOpen: false,
+          isExportDialogOpen: false,
         }))
       },
 
@@ -236,7 +245,46 @@ export const useAppStore = create<AppState>()(
         set((state) => ({
           isSaveDialogOpen: !state.isSaveDialogOpen,
           isLoadDialogOpen: false,
+          isImportDialogOpen: false,
+          isExportDialogOpen: false,
         }))
+      },
+
+      toggleImportDialog: () => {
+        set((state) => ({
+          isImportDialogOpen: !state.isImportDialogOpen,
+          isLoadDialogOpen: false,
+          isSaveDialogOpen: false,
+          isExportDialogOpen: false,
+        }))
+      },
+
+      toggleExportDialog: () => {
+        set((state) => ({
+          isExportDialogOpen: !state.isExportDialogOpen,
+          isLoadDialogOpen: false,
+          isSaveDialogOpen: false,
+          isImportDialogOpen: false,
+        }))
+      },
+
+      importWarbandFromImport: (warband: Warband) => {
+        // Check if the faction exists
+        const faction = factions.find((f) => f.id === warband.factionId) || null
+
+        if (faction) {
+          // Generate a new ID for the imported warband
+          const importedWarband = {
+            ...warband,
+            id: uuidv4(), // Create a new ID for the imported warband
+          }
+
+          set({
+            currentWarband: importedWarband,
+            selectedFaction: faction,
+            isImportDialogOpen: false,
+          })
+        }
       },
     }),
     {

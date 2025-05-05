@@ -23,6 +23,8 @@ const PlayModePage = () => {
   const [unitVigors, setUnitVigors] = useState<UnitVigor[]>([])
   const [unitWounds, setUnitWounds] = useState<UnitWound[]>([])
   const [turnCount, setTurnCount] = useState(1)
+  const [isMobileView, setIsMobileView] = useState(false)
+  const [showUnitDetails, setShowUnitDetails] = useState(false)
 
   useEffect(() => {
     // Redirect to builder if no warband exists
@@ -48,7 +50,35 @@ const PlayModePage = () => {
       }))
       setUnitWounds(initialWounds)
     }
+
+    // Check if we're on mobile
+    const checkIsMobile = () => {
+      setIsMobileView(window.innerWidth < 768)
+    }
+
+    // Initial check
+    checkIsMobile()
+
+    // Add resize listener
+    window.addEventListener('resize', checkIsMobile)
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIsMobile)
   }, [currentWarband, navigate, unitVigors.length, unitWounds.length])
+
+  // Handle unit selection
+  const handleUnitSelect = (unit: Unit) => {
+    setSelectedUnit(unit)
+    // On mobile, show the unit details screen
+    if (isMobileView) {
+      setShowUnitDetails(true)
+    }
+  }
+
+  // Handle back button on mobile
+  const handleBackToUnitList = () => {
+    setShowUnitDetails(false)
+  }
 
   // Return if no warband exists
   if (!currentWarband) {
@@ -101,10 +131,325 @@ const PlayModePage = () => {
     )
   }
 
+  // Render unit details view
+  const renderUnitDetails = () => {
+    if (!selectedUnit)
+      return (
+        <div className="h-full flex items-center justify-center text-gray-500">
+          <p>Select a unit to view details</p>
+        </div>
+      )
+
+    return (
+      <div className="space-y-3">
+        {/* Mobile back button - only shown in mobile view with details */}
+        {isMobileView && showUnitDetails && (
+          <div className="sticky top-0 bg-white z-10 py-2">
+            <Button
+              onClick={handleBackToUnitList}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1 text-white"
+            >
+              ← Back to Units
+            </Button>
+          </div>
+        )}
+
+        {/* Top section with name, stats and control buttons */}
+        <div className="border-b pb-2">
+          <div className="flex justify-between items-start">
+            <div>
+              <h2 className="text-xl font-bold">{selectedUnit.name}</h2>
+              <p className="text-sm text-gray-600">{selectedUnit.unitType}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main combat stats - always visible at the top */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-sm">
+          <div
+            className={`${
+              getRemainingVigor(selectedUnit.id) > 0
+                ? 'bg-green-100'
+                : 'bg-red-100'
+            } p-2 rounded relative`}
+          >
+            <p className="text-xs text-gray-500">Vigor</p>
+            <div className="flex items-center">
+              <p className="font-semibold">
+                {getRemainingVigor(selectedUnit.id)}/{selectedUnit.vigor}
+              </p>
+              <div className="absolute right-1 flex gap-1">
+                <Button
+                  onClick={() => spendVigor(selectedUnit.id, 1)}
+                  variant="destructive"
+                  size="icon"
+                  className="h-5 w-5 rounded-full p-0"
+                  disabled={getRemainingVigor(selectedUnit.id) <= 0}
+                  title="Spend Vigor"
+                >
+                  -
+                </Button>
+                <Button
+                  onClick={() => {
+                    setUnitVigors((prev) =>
+                      prev.map((u) =>
+                        u.id === selectedUnit.id
+                          ? {
+                              ...u,
+                              spentVigor: Math.max(0, u.spentVigor - 1),
+                            }
+                          : u
+                      )
+                    )
+                  }}
+                  variant="default"
+                  size="icon"
+                  className="h-5 w-5 rounded-full p-0 bg-green-600 hover:bg-green-700"
+                  disabled={
+                    getRemainingVigor(selectedUnit.id) >= selectedUnit.vigor
+                  }
+                  title="Restore Vigor"
+                >
+                  +
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`${
+              getCurrentWounds(selectedUnit.id) > 0
+                ? 'bg-green-100'
+                : 'bg-red-100'
+            } p-2 rounded relative`}
+          >
+            <p className="text-xs text-gray-500">Wounds</p>
+            <div className="flex items-center">
+              <p className="font-semibold">
+                {getCurrentWounds(selectedUnit.id)}/{selectedUnit.wounds}
+              </p>
+              <div className="absolute right-1 flex gap-1">
+                <Button
+                  onClick={() => changeWounds(selectedUnit.id, -1)}
+                  variant="destructive"
+                  size="icon"
+                  className="h-5 w-5 rounded-full p-0"
+                  disabled={getCurrentWounds(selectedUnit.id) <= 0}
+                  title="Decrease Wounds"
+                >
+                  -
+                </Button>
+                <Button
+                  onClick={() => changeWounds(selectedUnit.id, 1)}
+                  variant="default"
+                  size="icon"
+                  className="h-5 w-5 rounded-full p-0 bg-green-600 hover:bg-green-700"
+                  disabled={
+                    getCurrentWounds(selectedUnit.id) >= selectedUnit.wounds
+                  }
+                  title="Increase Wounds"
+                >
+                  +
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-100 p-2 rounded">
+            <p className="text-xs text-gray-500">Competency</p>
+            <p className="font-semibold">{selectedUnit.competency}</p>
+          </div>
+          <div className="bg-gray-100 p-2 rounded">
+            <p className="text-xs text-gray-500">Resilience</p>
+            <p className="font-semibold">{selectedUnit.resilience}</p>
+          </div>
+          <div className="bg-gray-100 p-2 rounded">
+            <p className="text-xs text-gray-500">Willpower</p>
+            <p className="font-semibold">{selectedUnit.willpower}</p>
+          </div>
+          <div className="bg-gray-100 p-2 rounded">
+            <p className="text-xs text-gray-500">Total Cost</p>
+            <p className="font-semibold">{selectedUnit.totalCost}</p>
+          </div>
+        </div>
+
+        {/* Collapsible sections for detailed info - use accordion pattern */}
+        <div className="space-y-2">
+          {/* Weapons Section - Collapsible at parent level */}
+          <details className="group" open>
+            <summary className="cursor-pointer font-bold text-gray-700 bg-gray-100 p-2 rounded flex justify-between items-center">
+              Weapons
+              <span className="text-xs text-gray-500">
+                {selectedUnit.weapons.length} items
+              </span>
+            </summary>
+            <div className="mt-2 space-y-2 pl-2">
+              {selectedUnit.weapons.map((weapon) => (
+                <div
+                  key={weapon.id}
+                  className="border bg-white p-2 rounded shadow-sm"
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="font-medium text-blue-800">{weapon.name}</h4>
+                    <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                      CP: {weapon.combatPower}
+                    </span>
+                  </div>
+                  <p className="text-xs mb-1">{weapon.description}</p>
+
+                  {weapon.weaponKeywords.length > 0 && (
+                    <div className="mt-1 bg-gray-50 p-1 rounded border text-xs">
+                      <div className="space-y-1">
+                        {weapon.weaponKeywords.map((keyword) => (
+                          <div
+                            key={keyword.id}
+                            className="p-1 border-t first:border-t-0"
+                          >
+                            <div className="font-medium text-blue-700">
+                              {keyword.name}
+                            </div>
+                            <p className="mt-1 pl-2 text-gray-700">
+                              {keyword.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </details>
+
+          {/* Armor Section - Collapsible */}
+          <details className="group">
+            <summary className="cursor-pointer font-bold text-gray-700 bg-gray-100 p-2 rounded flex justify-between items-center">
+              Armor
+              <span className="text-xs text-gray-500">
+                {selectedUnit.armor.length} items
+              </span>
+            </summary>
+            <div className="mt-2 space-y-2 pl-2">
+              {selectedUnit.armor.map((armor) => (
+                <div
+                  key={armor.id}
+                  className="border bg-white p-2 rounded shadow-sm"
+                >
+                  <h4 className="font-medium text-blue-800">{armor.name}</h4>
+                  <p className="text-xs mt-1">{armor.description}</p>
+                </div>
+              ))}
+            </div>
+          </details>
+
+          {/* Equipment Section - Collapsible */}
+          <details className="group">
+            <summary className="cursor-pointer font-bold text-gray-700 bg-gray-100 p-2 rounded flex justify-between items-center">
+              Equipment
+              <span className="text-xs text-gray-500">
+                {selectedUnit.equipment.length} items
+              </span>
+            </summary>
+            <div className="mt-2 space-y-2 pl-2">
+              {selectedUnit.equipment.map((equipment) => (
+                <div
+                  key={equipment.id}
+                  className="border bg-white p-2 rounded shadow-sm"
+                >
+                  <h4 className="font-medium text-blue-800">
+                    {equipment.name}
+                  </h4>
+                  <p className="text-xs mt-1">{equipment.description}</p>
+                </div>
+              ))}
+            </div>
+          </details>
+
+          {/* Skills Section - Collapsible */}
+          <details className="group">
+            <summary className="cursor-pointer font-bold text-gray-700 bg-gray-100 p-2 rounded flex justify-between items-center">
+              Skills
+              <span className="text-xs text-gray-500">
+                {selectedUnit.skills.length} items
+              </span>
+            </summary>
+            <div className="mt-2 space-y-2 pl-2">
+              {selectedUnit.skills.map((skill) => (
+                <div
+                  key={skill.id}
+                  className="border bg-white p-2 rounded shadow-sm"
+                >
+                  <h4 className="font-medium text-blue-800">{skill.name}</h4>
+                  <p className="text-xs mt-1">{skill.description}</p>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
+      </div>
+    )
+  }
+
+  // Render unit list view
+  const renderUnitList = () => {
+    return (
+      <div className="w-full bg-gray-100 rounded p-2 overflow-auto h-full">
+        <h2 className="text-lg font-bold mb-2">Units</h2>
+
+        <div className="flex flex-col gap-2">
+          {currentWarband.units.map((unit) => {
+            const remainingVigor = getRemainingVigor(unit.id)
+            const currentWounds = getCurrentWounds(unit.id)
+            const isActive = remainingVigor > 0
+
+            return (
+              <button
+                key={unit.id}
+                onClick={() => handleUnitSelect(unit)}
+                className={`p-2 border rounded text-left hover:bg-gray-200 transition-colors w-full ${
+                  selectedUnit?.id === unit.id
+                    ? 'border-blue-500 bg-blue-50'
+                    : isActive
+                    ? 'border-gray-300 bg-gray-700'
+                    : 'border-gray-300 bg-gray-500 opacity-75'
+                }`}
+              >
+                <div className="flex justify-between items-center">
+                  <h3 className="font-semibold text-sm text-white">
+                    {unit.name}
+                  </h3>
+                  <span
+                    className={`text-xs rounded px-1 ${
+                      isActive ? 'bg-green-600' : 'bg-red-600'
+                    } text-white`}
+                  >
+                    VIG: {remainingVigor}/{unit.vigor}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-xs text-white">{unit.unitType}</p>
+                  <span
+                    className={`text-xs text-white px-1 rounded ${
+                      currentWounds > 0 ? 'bg-green-700' : 'bg-red-700'
+                    }`}
+                  >
+                    HP: {currentWounds}/{unit.wounds}
+                  </span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-2 min-h-screen h-full">
       {/* Turn controls */}
-      <div className="bg-gray-800 text-white p-2 rounded flex justify-between items-center">
+      <div className="bg-gray-800 text-white p-2 rounded flex flex-wrap justify-between items-center gap-2">
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate('/builder')}
@@ -124,290 +469,35 @@ const PlayModePage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-2 flex-grow overflow-hidden">
-        {/* Left sidebar with unit list */}
-        <div className="w-full md:w-1/3 lg:w-1/4 bg-gray-100 rounded p-2 overflow-auto h-[calc(100vh-5rem)]">
-          <h2 className="text-lg font-bold mb-2">Units</h2>
+      {/* Desktop layout - side by side */}
+      {!isMobileView && (
+        <div className="flex flex-col md:flex-row gap-2 flex-grow overflow-hidden">
+          {/* Left sidebar with unit list */}
+          <div className="w-full md:w-1/3 lg:w-1/4 bg-gray-100 rounded p-2 overflow-auto h-[20vh] md:h-[calc(100vh-5rem)]">
+            {renderUnitList()}
+          </div>
 
-          <div className="flex flex-col space-y-1">
-            {currentWarband.units.map((unit) => {
-              const remainingVigor = getRemainingVigor(unit.id)
-              const currentWounds = getCurrentWounds(unit.id)
-              const isActive = remainingVigor > 0
-
-              return (
-                <button
-                  key={unit.id}
-                  onClick={() => setSelectedUnit(unit)}
-                  className={`p-2 border rounded text-left hover:bg-gray-200 transition-colors ${
-                    selectedUnit?.id === unit.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : isActive
-                      ? 'border-gray-300 bg-gray-700'
-                      : 'border-gray-300 bg-gray-500 opacity-75'
-                  }`}
-                >
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-sm text-white">
-                      {unit.name}
-                    </h3>
-                    <span
-                      className={`text-xs rounded px-1 ${
-                        isActive ? 'bg-green-600' : 'bg-red-600'
-                      } text-white`}
-                    >
-                      VIG: {remainingVigor}/{unit.vigor}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-white">{unit.unitType}</p>
-                    <span
-                      className={`text-xs text-white px-1 rounded ${
-                        currentWounds > 0 ? 'bg-green-700' : 'bg-red-700'
-                      }`}
-                    >
-                      HP: {currentWounds}/{unit.wounds}
-                    </span>
-                  </div>
-                </button>
-              )
-            })}
+          {/* Right content area with unit details */}
+          <div className="w-full md:w-2/3 lg:w-3/4 bg-white rounded p-2 overflow-auto h-[calc(80vh-5rem)] md:h-[calc(100vh-5rem)]">
+            {renderUnitDetails()}
           </div>
         </div>
+      )}
 
-        {/* Right content area with unit details */}
-        <div className="w-full md:w-2/3 lg:w-3/4 bg-white rounded p-2 overflow-auto h-[calc(100vh-5rem)]">
-          {selectedUnit ? (
-            <div className="space-y-3">
-              <div className="border-b pb-2">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-xl font-bold">{selectedUnit.name}</h2>
-                    <p className="text-sm text-gray-600">
-                      {selectedUnit.unitType}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2 text-sm">
-                <div className="bg-gray-100 p-2 rounded">
-                  <p className="text-xs text-gray-500">Competency</p>
-                  <p className="font-semibold">{selectedUnit.competency}</p>
-                </div>
-                <div className="bg-gray-100 p-2 rounded">
-                  <p className="text-xs text-gray-500">Resilience</p>
-                  <p className="font-semibold">{selectedUnit.resilience}</p>
-                </div>
-                <div className="bg-gray-100 p-2 rounded">
-                  <p className="text-xs text-gray-500">Willpower</p>
-                  <p className="font-semibold">{selectedUnit.willpower}</p>
-                </div>
-                <div
-                  className={`${
-                    getRemainingVigor(selectedUnit.id) > 0
-                      ? 'bg-green-100'
-                      : 'bg-red-100'
-                  } p-2 rounded relative`}
-                >
-                  <p className="text-xs text-gray-500">Vigor</p>
-                  <div className="flex items-center">
-                    <p className="font-semibold">
-                      {getRemainingVigor(selectedUnit.id)}/{selectedUnit.vigor}
-                    </p>
-                    <div className="absolute right-1 flex gap-1">
-                      <Button
-                        onClick={() => spendVigor(selectedUnit.id, 1)}
-                        variant="destructive"
-                        size="icon"
-                        className="h-5 w-5 rounded-full p-0"
-                        disabled={getRemainingVigor(selectedUnit.id) <= 0}
-                        title="Spend Vigor"
-                      >
-                        -
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setUnitVigors((prev) =>
-                            prev.map((u) =>
-                              u.id === selectedUnit.id
-                                ? {
-                                    ...u,
-                                    spentVigor: Math.max(0, u.spentVigor - 1),
-                                  }
-                                : u
-                            )
-                          )
-                        }}
-                        variant="default"
-                        size="icon"
-                        className="h-5 w-5 rounded-full p-0 bg-green-600 hover:bg-green-700"
-                        disabled={
-                          getRemainingVigor(selectedUnit.id) >=
-                          selectedUnit.vigor
-                        }
-                        title="Restore Vigor"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className={`${
-                    getCurrentWounds(selectedUnit.id) > 0
-                      ? 'bg-green-100'
-                      : 'bg-red-100'
-                  } p-2 rounded relative`}
-                >
-                  <p className="text-xs text-gray-500">Wounds</p>
-                  <div className="flex items-center">
-                    <p className="font-semibold">
-                      {getCurrentWounds(selectedUnit.id)}/{selectedUnit.wounds}
-                    </p>
-                    <div className="absolute right-1 flex gap-1">
-                      <Button
-                        onClick={() => changeWounds(selectedUnit.id, -1)}
-                        variant="destructive"
-                        size="icon"
-                        className="h-5 w-5 rounded-full p-0"
-                        disabled={getCurrentWounds(selectedUnit.id) <= 0}
-                        title="Decrease Wounds"
-                      >
-                        -
-                      </Button>
-                      <Button
-                        onClick={() => changeWounds(selectedUnit.id, 1)}
-                        variant="default"
-                        size="icon"
-                        className="h-5 w-5 rounded-full p-0 bg-green-600 hover:bg-green-700"
-                        disabled={
-                          getCurrentWounds(selectedUnit.id) >=
-                          selectedUnit.wounds
-                        }
-                        title="Increase Wounds"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-100 p-2 rounded">
-                  <p className="text-xs text-gray-500">Total Cost</p>
-                  <p className="font-semibold">{selectedUnit.totalCost}</p>
-                </div>
-              </div>
-
-              {/* Weapons Section */}
-              {selectedUnit.weapons.length > 0 && (
-                <div className="border rounded p-2 bg-gray-50">
-                  <h3 className="font-semibold mb-2">Weapons</h3>
-                  <div className="space-y-2">
-                    {selectedUnit.weapons.map((weapon) => (
-                      <div
-                        key={weapon.id}
-                        className="border bg-white p-2 rounded shadow-sm"
-                      >
-                        <div className="flex justify-between items-center mb-1">
-                          <h4 className="font-medium text-blue-800">
-                            {weapon.name}
-                          </h4>
-                          <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">
-                            CP: {weapon.combatPower}
-                          </span>
-                        </div>
-                        <p className="text-xs mb-1">{weapon.description}</p>
-
-                        {weapon.weaponKeywords.length > 0 && (
-                          <div className="mt-1 bg-gray-50 p-1 rounded border text-xs">
-                            <div className="space-y-1">
-                              {weapon.weaponKeywords.map((keyword) => (
-                                <div
-                                  key={keyword.id}
-                                  className="border-l-2 border-blue-300 pl-1"
-                                >
-                                  <span className="font-medium text-blue-700">
-                                    {keyword.name}:
-                                  </span>{' '}
-                                  {keyword.description}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Armor Section */}
-              {selectedUnit.armor.length > 0 && (
-                <div className="border rounded p-2 bg-gray-50">
-                  <h3 className="font-semibold mb-2">Armor</h3>
-                  <div className="space-y-2">
-                    {selectedUnit.armor.map((armor) => (
-                      <div
-                        key={armor.id}
-                        className="border bg-white p-2 rounded shadow-sm"
-                      >
-                        <h4 className="font-medium text-blue-800">
-                          {armor.name}
-                        </h4>
-                        <p className="text-xs">{armor.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Equipment Section */}
-              {selectedUnit.equipment.length > 0 && (
-                <div className="border rounded p-2 bg-gray-50">
-                  <h3 className="font-semibold mb-2">Equipment</h3>
-                  <div className="space-y-2">
-                    {selectedUnit.equipment.map((equipment) => (
-                      <div
-                        key={equipment.id}
-                        className="border bg-white p-2 rounded shadow-sm"
-                      >
-                        <h4 className="font-medium text-blue-800">
-                          {equipment.name}
-                        </h4>
-                        <p className="text-xs">{equipment.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Skills Section */}
-              {selectedUnit.skills.length > 0 && (
-                <div className="border rounded p-2 bg-gray-50">
-                  <h3 className="font-semibold mb-2">Skills</h3>
-                  <div className="space-y-2">
-                    {selectedUnit.skills.map((skill) => (
-                      <div
-                        key={skill.id}
-                        className="border bg-white p-2 rounded shadow-sm"
-                      >
-                        <h4 className="font-medium text-blue-800">
-                          {skill.name}
-                        </h4>
-                        <p className="text-xs">{skill.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+      {/* Mobile layout - full screen layout switching between list and detail */}
+      {isMobileView && (
+        <div className="flex-grow overflow-hidden">
+          {!showUnitDetails ? (
+            <div className="h-[calc(100vh-4rem)] overflow-auto">
+              {renderUnitList()}
             </div>
           ) : (
-            <div className="h-full flex items-center justify-center text-gray-500">
-              <p>Select a unit to view details</p>
+            <div className="h-[calc(100vh-4rem)] overflow-auto bg-white rounded p-2">
+              {renderUnitDetails()}
             </div>
           )}
         </div>
-      </div>
+      )}
     </div>
   )
 }

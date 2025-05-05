@@ -12,6 +12,9 @@ import { useAppStore } from './pages/store'
 import './App.css'
 import LoadDialog from './components/LoadDialog'
 import SaveDialog from './components/SaveDialog'
+import ImportDialog from './components/ImportDialog'
+import ExportDialog from './components/ExportDialog'
+import { Toaster } from './components/ui/sonner'
 
 function Header() {
   const location = useLocation()
@@ -20,8 +23,12 @@ function Header() {
     currentWarband,
     toggleSaveDialog,
     toggleLoadDialog,
+    toggleImportDialog,
+    toggleExportDialog,
     isLoadDialogOpen,
     isSaveDialogOpen,
+    isImportDialogOpen,
+    isExportDialogOpen,
   } = useAppStore()
 
   const isBuilderPage = location.pathname === '/builder'
@@ -34,7 +41,7 @@ function Header() {
         </h1>
 
         {isBuilderPage && (
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             <button
               className="px-3 py-1 sm:px-4 sm:py-2 bg-blue-600 rounded hover:bg-blue-700 text-white text-sm sm:text-base"
               onClick={toggleLoadDialog}
@@ -58,12 +65,29 @@ function Header() {
             >
               Play
             </button>
+            <button
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-yellow-600 rounded hover:bg-yellow-700 text-white text-sm sm:text-base"
+              onClick={toggleImportDialog}
+              aria-label="Import warband"
+            >
+              Import
+            </button>
+            <button
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-orange-600 rounded hover:bg-orange-700 text-white text-sm sm:text-base"
+              onClick={toggleExportDialog}
+              disabled={!currentWarband}
+              aria-label="Export warband"
+            >
+              Export
+            </button>
           </div>
         )}
       </div>
 
       {isLoadDialogOpen && <LoadDialog />}
       {isSaveDialogOpen && <SaveDialog />}
+      {isImportDialogOpen && <ImportDialog />}
+      {isExportDialogOpen && <ExportDialog />}
     </header>
   )
 }
@@ -81,6 +105,7 @@ function App() {
             <Route path="/play" element={<PlayModePage />} />
           </Routes>
         </main>
+        <Toaster position="top-right" richColors />
       </div>
     </Router>
   )

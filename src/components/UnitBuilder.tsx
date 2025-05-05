@@ -4,6 +4,7 @@ import { Unit } from '../types'
 import { units } from '../data/units'
 import { weapons, armor, equipmentItems } from '../data/equipment'
 import { skills } from '../data/skills'
+import { toast } from 'sonner'
 import {
   filterAvailableWeapons,
   filterAvailableArmor,
@@ -33,6 +34,11 @@ const UnitBuilder = () => {
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([])
   const [selectedSkills, setSelectedSkills] = useState<string[]>([])
   const [totalCost, setTotalCost] = useState(0)
+
+  // Calculate restriction limits
+  const maxWeapons = 2
+  const maxSkills = currentUnitInProgress?.willpower || 0
+  const maxEquipment = currentUnitInProgress?.resilience || 0
 
   // Filter items based on unit type
   const availableWeapons = currentUnitInProgress
@@ -135,6 +141,54 @@ const UnitBuilder = () => {
     resetForm()
   }
 
+  // Handle weapon selection with limit
+  const handleWeaponChange = (weaponId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedWeapons.length < maxWeapons) {
+        setSelectedWeapons([...selectedWeapons, weaponId])
+      } else {
+        toast.warning(`Maximum of ${maxWeapons} weapons allowed`, {
+          description: 'Remove a weapon before adding another',
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedWeapons(selectedWeapons.filter((id) => id !== weaponId))
+    }
+  }
+
+  // Handle equipment selection with limit
+  const handleEquipmentChange = (equipmentId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedEquipment.length < maxEquipment) {
+        setSelectedEquipment([...selectedEquipment, equipmentId])
+      } else {
+        toast.warning(`Maximum of ${maxEquipment} equipment items allowed`, {
+          description: `Based on resilience of ${maxEquipment}`,
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedEquipment(selectedEquipment.filter((id) => id !== equipmentId))
+    }
+  }
+
+  // Handle skill selection with limit
+  const handleSkillChange = (skillId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedSkills.length < maxSkills) {
+        setSelectedSkills([...selectedSkills, skillId])
+      } else {
+        toast.warning(`Maximum of ${maxSkills} skills allowed`, {
+          description: `Based on willpower of ${maxSkills}`,
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedSkills(selectedSkills.filter((id) => id !== skillId))
+    }
+  }
+
   // Filter units by the selected faction
   const filteredUnits = units.filter(
     (unit) => selectedFaction && unit.factionId === selectedFaction.id
@@ -194,6 +248,18 @@ const UnitBuilder = () => {
               />
             </div>
 
+            <div className="flex flex-wrap gap-2 mb-3">
+              <div className="bg-blue-100 px-2 py-1 rounded text-xs">
+                Max Weapons: {selectedWeapons.length}/{maxWeapons}
+              </div>
+              <div className="bg-blue-100 px-2 py-1 rounded text-xs">
+                Max Equipment: {selectedEquipment.length}/{maxEquipment}
+              </div>
+              <div className="bg-blue-100 px-2 py-1 rounded text-xs">
+                Max Skills: {selectedSkills.length}/{maxSkills}
+              </div>
+            </div>
+
             <Tabs
               defaultValue="weapons"
               className="w-full flex-1 flex flex-col"
@@ -203,7 +269,7 @@ const UnitBuilder = () => {
                   value="weapons"
                   className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
                 >
-                  Weapons
+                  Weapons ({selectedWeapons.length}/{maxWeapons})
                 </TabsTrigger>
                 <TabsTrigger
                   value="armor"
@@ -215,13 +281,13 @@ const UnitBuilder = () => {
                   value="equipment"
                   className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
                 >
-                  Equipment
+                  Equipment ({selectedEquipment.length}/{maxEquipment})
                 </TabsTrigger>
                 <TabsTrigger
                   value="skills"
                   className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
                 >
-                  Skills
+                  Skills ({selectedSkills.length}/{maxSkills})
                 </TabsTrigger>
               </TabsList>
 
@@ -237,20 +303,19 @@ const UnitBuilder = () => {
                         type="checkbox"
                         id={`weapon-${weapon.id}`}
                         checked={selectedWeapons.includes(weapon.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedWeapons([...selectedWeapons, weapon.id])
-                          } else {
-                            setSelectedWeapons(
-                              selectedWeapons.filter((id) => id !== weapon.id)
-                            )
-                          }
-                        }}
+                        onChange={(e) =>
+                          handleWeaponChange(weapon.id, e.target.checked)
+                        }
                         className="mr-2 mt-1"
                       />
                       <label
                         htmlFor={`weapon-${weapon.id}`}
-                        className="text-sm"
+                        className={`text-sm ${
+                          !selectedWeapons.includes(weapon.id) &&
+                          selectedWeapons.length >= maxWeapons
+                            ? 'text-gray-400'
+                            : ''
+                        }`}
                       >
                         <div className="font-medium">
                           {weapon.name} ({weapon.cost} pts)
@@ -344,21 +409,20 @@ const UnitBuilder = () => {
                         type="checkbox"
                         id={`equip-${item.id}`}
                         checked={selectedEquipment.includes(item.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedEquipment([
-                              ...selectedEquipment,
-                              item.id,
-                            ])
-                          } else {
-                            setSelectedEquipment(
-                              selectedEquipment.filter((id) => id !== item.id)
-                            )
-                          }
-                        }}
+                        onChange={(e) =>
+                          handleEquipmentChange(item.id, e.target.checked)
+                        }
                         className="mr-2 mt-1"
                       />
-                      <label htmlFor={`equip-${item.id}`} className="text-sm">
+                      <label
+                        htmlFor={`equip-${item.id}`}
+                        className={`text-sm ${
+                          !selectedEquipment.includes(item.id) &&
+                          selectedEquipment.length >= maxEquipment
+                            ? 'text-gray-400'
+                            : ''
+                        }`}
+                      >
                         <div className="font-medium">
                           {item.name} ({item.cost} pts)
                         </div>
@@ -383,18 +447,20 @@ const UnitBuilder = () => {
                         type="checkbox"
                         id={`skill-${skill.id}`}
                         checked={selectedSkills.includes(skill.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedSkills([...selectedSkills, skill.id])
-                          } else {
-                            setSelectedSkills(
-                              selectedSkills.filter((id) => id !== skill.id)
-                            )
-                          }
-                        }}
+                        onChange={(e) =>
+                          handleSkillChange(skill.id, e.target.checked)
+                        }
                         className="mr-2 mt-1"
                       />
-                      <label htmlFor={`skill-${skill.id}`} className="text-sm">
+                      <label
+                        htmlFor={`skill-${skill.id}`}
+                        className={`text-sm ${
+                          !selectedSkills.includes(skill.id) &&
+                          selectedSkills.length >= maxSkills
+                            ? 'text-gray-400'
+                            : ''
+                        }`}
+                      >
                         <div className="font-medium">
                           {skill.name} ({skill.cost} pts)
                         </div>
