@@ -75,6 +75,7 @@ export interface Unit {
   armor: Armor[]
   equipment: Equipment[]
   skills: Skill[]
+  defaultSkills: Skill[]
   totalCost: number
 }
 

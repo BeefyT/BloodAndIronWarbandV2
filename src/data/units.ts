@@ -16,7 +16,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'unshaken-by-faith',
         name: 'Unshaken by Faith',
@@ -41,7 +42,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'zealous-charge',
         name: 'Zealous Charge',
@@ -74,7 +76,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'devoted-fire',
         name: 'Devoted Fire',
@@ -107,7 +110,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'sacrosanctum',
         name: 'Sacrosanctum',
@@ -148,7 +152,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'aura-of-resolve',
         name: 'Aura of Resolve',
@@ -182,7 +187,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'willing-offering',
         name: 'Willing Offering',
@@ -224,7 +230,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'conduit',
         name: 'Conduit',
@@ -274,7 +281,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'oath-of-binding-flesh',
         name: 'Oath of Binding Flesh',
@@ -316,7 +324,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'echoes-of-eternities',
         name: 'Echoes of Eternities',
@@ -358,7 +367,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'shadow-walk',
         name: 'Shadow Walk',
@@ -392,7 +402,8 @@ export const units: Unit[] = [
     weapons: [],
     armor: [],
     equipment: [],
-    skills: [
+    skills: [],
+    defaultSkills: [
       {
         id: 'ritual-detonation',
         name: 'Ritual Detonation',

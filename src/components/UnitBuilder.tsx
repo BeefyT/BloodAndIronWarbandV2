@@ -129,6 +129,7 @@ const UnitBuilder = () => {
       armor: armor.filter((a) => selectedArmor.includes(a.id)),
       equipment: equipmentItems.filter((e) => selectedEquipment.includes(e.id)),
       skills: skills.filter((s) => selectedSkills.includes(s.id)),
+      defaultSkills: currentUnitInProgress.defaultSkills,
       totalCost,
     }
 

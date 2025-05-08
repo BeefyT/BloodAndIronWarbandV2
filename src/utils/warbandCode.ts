@@ -15,8 +15,6 @@ type CompressedWeapon = CompressedObject
 type CompressedArmor = CompressedObject
 type CompressedEquipment = CompressedObject
 type CompressedSkill = CompressedObject
-type CompressedUnit = CompressedObject
-type CompressedWarband = CompressedObject
 
 // Keys for the compressed format
 const KEYS = {
@@ -42,16 +40,50 @@ const KEYS = {
   armor: 'q',
   equipment: 'r',
   skills: 's',
-  unitTotalCost: 't',
+  defaultSkills: 't',
+  unitTotalCost: 'u',
 
   // Item keys
-  itemId: 'u',
-  itemName: 'v',
-  cost: 'w',
-  description: 'x', // Not needed for sharing but kept for structure
-  combatPower: 'y',
-  weaponKeywords: 'z',
+  itemId: 'v',
+  itemName: 'w',
+  cost: 'x',
+  description: 'y', // Not needed for sharing but kept for structure
+  combatPower: 'z',
+  weaponKeywords: 'aa',
 } as const
+
+/**
+ * Structure of a compressed unit
+ */
+interface CompressedUnit {
+  [KEYS.unitId]: string
+  [KEYS.unitName]: string
+  [KEYS.unitFactionId]: string
+  [KEYS.unitType]: UnitType
+  [KEYS.baseCost]: number
+  [KEYS.competency]: number
+  [KEYS.resilience]: number
+  [KEYS.willpower]: number
+  [KEYS.vigor]: number
+  [KEYS.wounds]: number
+  [KEYS.weapons]: CompressedWeapon[]
+  [KEYS.armor]: CompressedArmor[]
+  [KEYS.equipment]: CompressedEquipment[]
+  [KEYS.skills]: CompressedSkill[]
+  [KEYS.defaultSkills]: CompressedSkill[]
+  [KEYS.unitTotalCost]: number
+}
+
+/**
+ * Structure of a compressed warband
+ */
+interface CompressedWarband {
+  [KEYS.id]: string
+  [KEYS.name]: string
+  [KEYS.factionId]: string
+  [KEYS.units]: CompressedUnit[]
+  [KEYS.totalCost]: number
+}
 
 /**
  * Compresses a warband for export
@@ -91,6 +123,7 @@ function compressUnit(unit: Unit): CompressedUnit {
     [KEYS.armor]: unit.armor.map(compressArmor),
     [KEYS.equipment]: unit.equipment.map(compressEquipment),
     [KEYS.skills]: unit.skills.map(compressSkill),
+    [KEYS.defaultSkills]: unit.defaultSkills.map(compressSkill),
     [KEYS.unitTotalCost]: unit.totalCost,
   }
 }
@@ -179,6 +212,8 @@ function expandUnit(compressed: CompressedUnit): Unit {
     KEYS.equipment
   ] as CompressedEquipment[]
   const compressedSkills = compressed[KEYS.skills] as CompressedSkill[]
+  const compressedDefaultSkills =
+    (compressed[KEYS.defaultSkills] as CompressedSkill[]) || []
 
   return {
     id: uuidv4(), // Generate a new ID
@@ -195,6 +230,7 @@ function expandUnit(compressed: CompressedUnit): Unit {
     armor: compressedArmor.map(expandArmor),
     equipment: compressedEquipment.map(expandEquipment),
     skills: compressedSkills.map(expandSkill),
+    defaultSkills: compressedDefaultSkills.map(expandSkill),
     totalCost: compressed[KEYS.unitTotalCost] as number,
   }
 }

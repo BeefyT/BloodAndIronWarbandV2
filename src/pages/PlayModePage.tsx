@@ -368,23 +368,81 @@ const PlayModePage = () => {
           </details>
 
           {/* Skills Section - Collapsible */}
-          <details className="group">
+          <details className="group" open>
             <summary className="cursor-pointer font-bold text-gray-700 bg-gray-100 p-2 rounded flex justify-between items-center">
               Skills
               <span className="text-xs text-gray-500">
-                {selectedUnit.skills.length} items
+                {selectedUnit.defaultSkills.length > 0 &&
+                selectedUnit.skills.length > 0
+                  ? `${selectedUnit.defaultSkills.length} unit / ${selectedUnit.skills.length} selected`
+                  : `${
+                      selectedUnit.defaultSkills.length +
+                      selectedUnit.skills.length
+                    } items`}
               </span>
             </summary>
             <div className="mt-2 space-y-2 pl-2">
-              {selectedUnit.skills.map((skill) => (
-                <div
-                  key={skill.id}
-                  className="border bg-white p-2 rounded shadow-sm"
-                >
-                  <h4 className="font-medium text-blue-800">{skill.name}</h4>
-                  <p className="text-xs mt-1">{skill.description}</p>
-                </div>
-              ))}
+              {/* Unit-specific skills section */}
+              {selectedUnit.defaultSkills.length > 0 && (
+                <>
+                  <h3 className="font-medium text-sm text-amber-800 ml-1 border-b border-amber-200 pb-1 mb-2">
+                    Unit Skills
+                  </h3>
+                  {selectedUnit.defaultSkills.map((skill) => (
+                    <div
+                      key={skill.id}
+                      className="border border-amber-200 bg-amber-50 p-2 rounded shadow-sm mb-2"
+                    >
+                      <h4 className="font-medium text-amber-900 flex items-center">
+                        <span className="text-xs bg-amber-200 text-amber-800 px-1 rounded mr-2">
+                          Unit
+                        </span>
+                        {skill.name}
+                      </h4>
+                      <p className="text-xs mt-1 text-amber-950">
+                        {skill.description}
+                      </p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {/* Selected skills section */}
+              {selectedUnit.skills.length > 0 && (
+                <>
+                  <h3 className="font-medium text-sm text-blue-800 ml-1 border-b border-blue-200 pb-1 mb-2 mt-4">
+                    Selected Skills
+                  </h3>
+                  {selectedUnit.skills.map((skill) => (
+                    <div
+                      key={skill.id}
+                      className="border border-blue-200 bg-white p-2 rounded shadow-sm mb-2"
+                    >
+                      <div className="flex justify-between items-center">
+                        <h4 className="font-medium text-blue-800">
+                          {skill.name}
+                        </h4>
+                        <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                          Cost: {skill.cost}
+                        </span>
+                      </div>
+                      <p className="text-xs mt-1 text-gray-700">
+                        {skill.description}
+                      </p>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {/* Message if no selected skills */}
+              {selectedUnit.defaultSkills.length > 0 &&
+                selectedUnit.skills.length === 0 && (
+                  <div className="border border-gray-200 bg-gray-50 p-2 rounded shadow-sm mt-4">
+                    <p className="text-xs text-gray-500 italic">
+                      No additional selected skills
+                    </p>
+                  </div>
+                )}
             </div>
           </details>
         </div>
