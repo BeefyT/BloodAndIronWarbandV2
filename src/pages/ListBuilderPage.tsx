@@ -28,8 +28,9 @@ const ListBuilderPage = () => {
 
   return (
     <div className="w-full px-2 sm:px-4 bg-white text-gray-800">
-      <div className="mb-4 sm:mb-6">
-        <div className="flex items-center">
+      {/* Navigation header with warband info and tabs */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-8 border-b border-gray-300">
+        <div className="flex items-center mb-4 sm:mb-0">
           <button
             onClick={() => navigate('/')}
             className="mr-2 text-blue-500 hover:text-blue-700"
@@ -50,43 +51,45 @@ const ListBuilderPage = () => {
               />
             </svg>
           </button>
-          <h1 className="text-xl sm:text-3xl font-bold truncate">
-            {selectedFaction.name} Warband
-          </h1>
-        </div>
-        <p className="text-sm sm:text-base text-gray-600 mt-1">
-          {selectedFaction.description}
-        </p>
-        {currentWarband && (
-          <div className="mt-2 text-sm sm:text-base">
-            <span className="font-semibold">Total Cost:</span>{' '}
-            {currentWarband.totalCost} points
+          <div>
+            <h1 className="text-xl sm:text-3xl font-bold truncate">
+              {selectedFaction.name} Warband
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">
+              {selectedFaction.description}
+            </p>
+            {currentWarband && (
+              <div className="text-sm sm:text-base">
+                <span className="font-semibold">Total Cost:</span>{' '}
+                {currentWarband.totalCost} points
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Navigation tabs */}
-      <div className="flex mb-4 sm:mb-8 border-b border-gray-300">
-        <button
-          className={`px-2 sm:px-4 py-1 sm:py-2 mr-2 bg-gray-700 text-white text-sm sm:text-base rounded-t-md ${
-            isUnitBuilder
-              ? 'border-b-2 border-blue-500 font-semibold bg-gray-800'
-              : ''
-          }`}
-          onClick={toggleUnitBuilder}
-        >
-          Unit Builder
-        </button>
-        <button
-          className={`px-2 sm:px-4 py-1 sm:py-2 bg-gray-700 text-white text-sm sm:text-base rounded-t-md ${
-            isWarbandEditor
-              ? 'border-b-2 border-blue-500 font-semibold bg-gray-800'
-              : ''
-          }`}
-          onClick={toggleWarbandEditor}
-        >
-          Warband Editor
-        </button>
+        {/* Tabs */}
+        <div className="flex">
+          <button
+            className={`px-2 sm:px-4 py-1 sm:py-2 mr-2 bg-gray-700 text-white text-sm sm:text-base rounded-t-md ${
+              isUnitBuilder
+                ? 'border-b-2 border-blue-500 font-semibold bg-gray-800'
+                : ''
+            }`}
+            onClick={toggleUnitBuilder}
+          >
+            Unit Builder
+          </button>
+          <button
+            className={`px-2 sm:px-4 py-1 sm:py-2 bg-gray-700 text-white text-sm sm:text-base rounded-t-md ${
+              isWarbandEditor
+                ? 'border-b-2 border-blue-500 font-semibold bg-gray-800'
+                : ''
+            }`}
+            onClick={toggleWarbandEditor}
+          >
+            Warband Editor
+          </button>
+        </div>
       </div>
 
       {/* Content based on selected tab */}

@@ -9,6 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { toast } from 'sonner'
 import {
   filterAvailableWeapons,
   filterAvailableArmor,
@@ -30,6 +31,11 @@ const WarbandEditor = () => {
 
   const selectedUnit =
     currentWarband?.units.find((u) => u.id === selectedUnitId) || null
+
+  // Calculate restriction limits
+  const maxWeapons = 2
+  const maxSkills = selectedUnit?.willpower || 0
+  const maxEquipment = selectedUnit?.resilience || 0
 
   // Filter items based on unit type, just like in UnitBuilder
   const availableWeapons = selectedUnit
@@ -144,6 +150,54 @@ const WarbandEditor = () => {
     resetForm()
   }
 
+  // Handle weapon selection with limit
+  const handleWeaponChange = (weaponId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedWeapons.length < maxWeapons) {
+        setSelectedWeapons([...selectedWeapons, weaponId])
+      } else {
+        toast.warning(`Maximum of ${maxWeapons} weapons allowed`, {
+          description: 'Remove a weapon before adding another',
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedWeapons(selectedWeapons.filter((id) => id !== weaponId))
+    }
+  }
+
+  // Handle equipment selection with limit
+  const handleEquipmentChange = (equipmentId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedEquipment.length < maxEquipment) {
+        setSelectedEquipment([...selectedEquipment, equipmentId])
+      } else {
+        toast.warning(`Maximum of ${maxEquipment} equipment items allowed`, {
+          description: `Based on resilience of ${maxEquipment}`,
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedEquipment(selectedEquipment.filter((id) => id !== equipmentId))
+    }
+  }
+
+  // Handle skill selection with limit
+  const handleSkillChange = (skillId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedSkills.length < maxSkills) {
+        setSelectedSkills([...selectedSkills, skillId])
+      } else {
+        toast.warning(`Maximum of ${maxSkills} skills allowed`, {
+          description: `Based on willpower of ${maxSkills}`,
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedSkills(selectedSkills.filter((id) => id !== skillId))
+    }
+  }
+
   if (!currentWarband) {
     return (
       <div className="text-center py-10 text-gray-500">
@@ -163,33 +217,33 @@ const WarbandEditor = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
       {/* Left panel - Unit selection */}
-      <div className="border rounded-lg p-3 sm:p-4 bg-white">
-        <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">
+      <div className="border rounded-lg p-2 sm:p-4 bg-white">
+        <h2 className="text-base sm:text-xl font-semibold mb-1 sm:mb-4">
           Warband Units
         </h2>
-        <div className="space-y-2">
+        <div className="space-y-1 sm:space-y-2 max-h-[60vh] overflow-y-auto">
           {currentWarband.units.map((unit) => (
             <div
               key={unit.id}
-              className={`p-2 sm:p-3 border rounded cursor-pointer hover:bg-gray-100 ${
+              className={`p-1.5 sm:p-3 border rounded cursor-pointer hover:bg-gray-100 ${
                 selectedUnitId === unit.id
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-300'
               }`}
               onClick={() => setSelectedUnitId(unit.id)}
             >
-              <div className="font-medium text-sm sm:text-base">
+              <div className="font-medium text-xs sm:text-base">
                 {unit.name}
               </div>
-              <div className="text-xs sm:text-sm text-gray-600">
-                Cost: {unit.totalCost} points
+              <div className="text-xs text-gray-600">
+                Cost: {unit.totalCost} pts
               </div>
               <div className="text-xs text-gray-500">Type: {unit.unitType}</div>
             </div>
           ))}
         </div>
-        <div className="mt-3 sm:mt-4 pt-2 sm:pt-4 border-t border-gray-300">
-          <div className="font-semibold text-sm sm:text-base">
+        <div className="mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-gray-300">
+          <div className="font-semibold text-xs sm:text-base">
             Total Warband Cost: {currentWarband.totalCost} points
           </div>
         </div>
@@ -197,270 +251,310 @@ const WarbandEditor = () => {
 
       {/* Right panel - Unit editing */}
       <div
-        className="col-span-1 lg:col-span-2 border rounded-lg p-3 sm:p-4 flex flex-col bg-white"
-        style={{ minHeight: '400px', maxHeight: '80vh', overflowY: 'auto' }}
+        className="col-span-1 lg:col-span-2 border rounded-lg flex flex-col bg-white"
+        style={{ minHeight: '400px', maxHeight: '70vh' }}
       >
         {selectedUnit ? (
           <>
-            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">
-              Edit Unit
-            </h2>
+            <div
+              className="p-2 sm:p-4 flex flex-col overflow-y-auto"
+              style={{ maxHeight: 'calc(70vh - 80px)' }}
+            >
+              <div className="mb-2 sm:mb-4">
+                <h2 className="block font-medium mb-1">{selectedUnit.name}</h2>
+              </div>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">
-                Unit Name
-              </label>
-              <input
-                type="text"
-                value={unitName}
-                onChange={(e) => setUnitName(e.target.value)}
-                className="w-full border rounded p-2"
-              />
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1 sm:gap-2 mb-2 sm:mb-3">
+                <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                  <span className="font-medium">Competency:</span>{' '}
+                  {selectedUnit.competency}
+                </div>
+                <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                  <span className="font-medium">Vigor:</span>{' '}
+                  {selectedUnit.vigor}
+                </div>
+                <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                  <span className="font-medium">Resilience:</span>{' '}
+                  {selectedUnit.resilience}
+                </div>
+                <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                  <span className="font-medium">Willpower:</span>{' '}
+                  {selectedUnit.willpower}
+                </div>
+                <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                  <span className="font-medium">Wounds:</span>{' '}
+                  {selectedUnit.wounds}
+                </div>
+                {selectedUnit.defaultSkills &&
+                  selectedUnit.defaultSkills.length > 0 && (
+                    <div className="col-span-2 sm:col-span-5 bg-gray-100 px-2 py-1 sm:px-3 sm:py-2 rounded text-xs">
+                      <div className="font-medium mb-1">Unit Skills:</div>
+                      <div className="space-y-1 grid grid-cols-2 gap-2">
+                        {selectedUnit.defaultSkills.map((skill) => (
+                          <div
+                            key={skill.id}
+                            className="pl-1 border-l-2 border-gray-300"
+                          >
+                            <div className="font-medium">{skill.name}</div>
+                            <div>{skill.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+              </div>
+
+              <Tabs
+                defaultValue="weapons"
+                className="w-full flex-1 flex flex-col"
+              >
+                <div className="sticky top-0 bg-white z-10 pb-5 border-b border-gray-200">
+                  <TabsList className="w-full mb-2 grid grid-cols-2 sm:grid-cols-4 gap-1 text-xs sm:text-sm">
+                    <TabsTrigger
+                      value="weapons"
+                      className="text-white bg-gray-700 hover:bg-gray-800"
+                    >
+                      Weapons ({selectedWeapons.length}/{maxWeapons})
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="armor"
+                      className="text-white bg-gray-700 hover:bg-gray-800"
+                    >
+                      Armor
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="equipment"
+                      className="text-white bg-gray-700 hover:bg-gray-800"
+                    >
+                      Equipment ({selectedEquipment.length}/{maxEquipment})
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="skills"
+                      className="text-white bg-gray-700 hover:bg-gray-800"
+                    >
+                      Skills ({selectedSkills.length}/{maxSkills})
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+
+                {/* Weapons tab content */}
+                <TabsContent
+                  value="weapons"
+                  className="flex-1 overflow-auto pt-2"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                    {availableWeapons.map((weapon) => (
+                      <div
+                        key={weapon.id}
+                        className="flex items-start mb-1 sm:mb-2 border-b pb-1 sm:pb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`weapon-edit-${weapon.id}`}
+                          checked={selectedWeapons.includes(weapon.id)}
+                          onChange={(e) =>
+                            handleWeaponChange(weapon.id, e.target.checked)
+                          }
+                          className="mr-2 mt-0.5 sm:mt-1"
+                        />
+                        <label
+                          htmlFor={`weapon-edit-${weapon.id}`}
+                          className={`text-xs sm:text-sm ${
+                            !selectedWeapons.includes(weapon.id) &&
+                            selectedWeapons.length >= maxWeapons
+                              ? 'text-gray-400'
+                              : ''
+                          }`}
+                        >
+                          <div className="font-medium">
+                            {weapon.name} ({weapon.cost} pts)
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            CP: {weapon.combatPower}
+                          </div>
+                          {weapon.weaponKeywords &&
+                            weapon.weaponKeywords.length > 0 && (
+                              <div className="text-xs text-gray-600">
+                                {weapon.weaponKeywords.map((keyword, index) => (
+                                  <React.Fragment key={keyword.id}>
+                                    <Tooltip delayDuration={300}>
+                                      <TooltipTrigger asChild>
+                                        <span className="underline cursor-help hover:text-blue-500 transition-colors">
+                                          {keyword.name}
+                                        </span>
+                                      </TooltipTrigger>
+                                      <TooltipContent
+                                        side="top"
+                                        className="max-w-[300px] bg-slate-800 text-white p-2 text-xs"
+                                      >
+                                        <p className="font-medium mb-1">
+                                          {keyword.name}
+                                        </p>
+                                        <p>{keyword.description}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                    {index < weapon.weaponKeywords.length - 1
+                                      ? ', '
+                                      : ''}
+                                  </React.Fragment>
+                                ))}
+                              </div>
+                            )}
+                          <div className="text-xs italic text-gray-500 hidden sm:block">
+                            {weapon.description}
+                          </div>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                {/* Armor tab content */}
+                <TabsContent
+                  value="armor"
+                  className="flex-1 overflow-auto pt-2"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                    {availableArmor.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-start mb-1 sm:mb-2 border-b pb-1 sm:pb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`armor-edit-${item.id}`}
+                          checked={selectedArmor.includes(item.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedArmor([...selectedArmor, item.id])
+                            } else {
+                              setSelectedArmor(
+                                selectedArmor.filter((id) => id !== item.id)
+                              )
+                            }
+                          }}
+                          className="mr-2 mt-0.5 sm:mt-1"
+                        />
+                        <label
+                          htmlFor={`armor-edit-${item.id}`}
+                          className="text-xs sm:text-sm"
+                        >
+                          <div className="font-medium">
+                            {item.name} ({item.cost} pts)
+                          </div>
+                          <div className="text-xs italic text-gray-500 hidden sm:block">
+                            {item.description}
+                          </div>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                {/* Equipment tab content */}
+                <TabsContent
+                  value="equipment"
+                  className="flex-1 overflow-auto pt-2"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                    {availableEquipment.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-start mb-1 sm:mb-2 border-b pb-1 sm:pb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`equip-edit-${item.id}`}
+                          checked={selectedEquipment.includes(item.id)}
+                          onChange={(e) =>
+                            handleEquipmentChange(item.id, e.target.checked)
+                          }
+                          className="mr-2 mt-0.5 sm:mt-1"
+                        />
+                        <label
+                          htmlFor={`equip-edit-${item.id}`}
+                          className={`text-xs sm:text-sm ${
+                            !selectedEquipment.includes(item.id) &&
+                            selectedEquipment.length >= maxEquipment
+                              ? 'text-gray-400'
+                              : ''
+                          }`}
+                        >
+                          <div className="font-medium">
+                            {item.name} ({item.cost} pts)
+                          </div>
+                          <div className="text-xs italic text-gray-500 hidden sm:block">
+                            {item.description}
+                          </div>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                {/* Skills tab content */}
+                <TabsContent
+                  value="skills"
+                  className="flex-1 overflow-auto pt-2"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                    {availableSkills.map((skill) => (
+                      <div
+                        key={skill.id}
+                        className="flex items-start mb-1 sm:mb-2 border-b pb-1 sm:pb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`skill-edit-${skill.id}`}
+                          checked={selectedSkills.includes(skill.id)}
+                          onChange={(e) =>
+                            handleSkillChange(skill.id, e.target.checked)
+                          }
+                          className="mr-2 mt-0.5 sm:mt-1"
+                        />
+                        <label
+                          htmlFor={`skill-edit-${skill.id}`}
+                          className={`text-xs sm:text-sm ${
+                            !selectedSkills.includes(skill.id) &&
+                            selectedSkills.length >= maxSkills
+                              ? 'text-gray-400'
+                              : ''
+                          }`}
+                        >
+                          <div className="font-medium">
+                            {skill.name} ({skill.cost} pts)
+                          </div>
+                          <div className="text-xs italic text-gray-500 hidden sm:block">
+                            {skill.description}
+                          </div>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
 
-            <Tabs
-              defaultValue="weapons"
-              className="w-full flex-1 flex flex-col"
-            >
-              <TabsList className="w-full mb-2 sm:mb-4 gap-1 flex flex-wrap text-xs sm:text-sm">
-                <TabsTrigger
-                  value="weapons"
-                  className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
-                >
-                  Weapons
-                </TabsTrigger>
-                <TabsTrigger
-                  value="armor"
-                  className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
-                >
-                  Armor
-                </TabsTrigger>
-                <TabsTrigger
-                  value="equipment"
-                  className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
-                >
-                  Equipment
-                </TabsTrigger>
-                <TabsTrigger
-                  value="skills"
-                  className="flex-1 text-white bg-gray-700 hover:bg-gray-800"
-                >
-                  Skills
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Weapons tab content */}
-              <TabsContent value="weapons" className="flex-1 overflow-auto">
-                <div className="grid grid-cols-3 gap-3 max-h-[400px] overflow-y-auto pr-2">
-                  {availableWeapons.map((weapon) => (
-                    <div
-                      key={weapon.id}
-                      className="flex items-start mb-2 border-b pb-2"
-                    >
-                      <input
-                        type="checkbox"
-                        id={`weapon-edit-${weapon.id}`}
-                        checked={selectedWeapons.includes(weapon.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedWeapons([...selectedWeapons, weapon.id])
-                          } else {
-                            setSelectedWeapons(
-                              selectedWeapons.filter((id) => id !== weapon.id)
-                            )
-                          }
-                        }}
-                        className="mr-2 mt-1"
-                      />
-                      <label
-                        htmlFor={`weapon-edit-${weapon.id}`}
-                        className="text-sm"
-                      >
-                        <div className="font-medium">
-                          {weapon.name} ({weapon.cost} pts)
-                        </div>
-                        <div className="text-xs text-gray-600">
-                          Combat Power: {weapon.combatPower}
-                        </div>
-                        {weapon.weaponKeywords &&
-                          weapon.weaponKeywords.length > 0 && (
-                            <div className="text-xs text-gray-600">
-                              Keywords:{' '}
-                              {weapon.weaponKeywords.map((keyword, index) => (
-                                <React.Fragment key={keyword.id}>
-                                  <Tooltip delayDuration={300}>
-                                    <TooltipTrigger asChild>
-                                      <span className="underline cursor-help hover:text-blue-500 transition-colors">
-                                        {keyword.name}
-                                      </span>
-                                    </TooltipTrigger>
-                                    <TooltipContent
-                                      side="top"
-                                      className="max-w-[300px] bg-slate-800 text-white p-2 text-xs"
-                                    >
-                                      <p className="font-medium mb-1">
-                                        {keyword.name}
-                                      </p>
-                                      <p>{keyword.description}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                  {index < weapon.weaponKeywords.length - 1
-                                    ? ', '
-                                    : ''}
-                                </React.Fragment>
-                              ))}
-                            </div>
-                          )}
-                        <div className="text-xs italic text-gray-500">
-                          {weapon.description}
-                        </div>
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              {/* Armor tab content */}
-              <TabsContent value="armor" className="flex-1 overflow-auto">
-                <div className="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2">
-                  {availableArmor.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-start mb-2 border-b pb-2"
-                    >
-                      <input
-                        type="checkbox"
-                        id={`armor-edit-${item.id}`}
-                        checked={selectedArmor.includes(item.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedArmor([...selectedArmor, item.id])
-                          } else {
-                            setSelectedArmor(
-                              selectedArmor.filter((id) => id !== item.id)
-                            )
-                          }
-                        }}
-                        className="mr-2 mt-1"
-                      />
-                      <label
-                        htmlFor={`armor-edit-${item.id}`}
-                        className="text-sm"
-                      >
-                        <div className="font-medium">
-                          {item.name} ({item.cost} pts)
-                        </div>
-                        <div className="text-xs italic text-gray-500">
-                          {item.description}
-                        </div>
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              {/* Equipment tab content */}
-              <TabsContent value="equipment" className="flex-1 overflow-auto">
-                <div className="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2">
-                  {availableEquipment.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-start mb-2 border-b pb-2"
-                    >
-                      <input
-                        type="checkbox"
-                        id={`equip-edit-${item.id}`}
-                        checked={selectedEquipment.includes(item.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedEquipment([
-                              ...selectedEquipment,
-                              item.id,
-                            ])
-                          } else {
-                            setSelectedEquipment(
-                              selectedEquipment.filter((id) => id !== item.id)
-                            )
-                          }
-                        }}
-                        className="mr-2 mt-1"
-                      />
-                      <label
-                        htmlFor={`equip-edit-${item.id}`}
-                        className="text-sm"
-                      >
-                        <div className="font-medium">
-                          {item.name} ({item.cost} pts)
-                        </div>
-                        <div className="text-xs italic text-gray-500">
-                          {item.description}
-                        </div>
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              {/* Skills tab content */}
-              <TabsContent value="skills" className="flex-1 overflow-auto">
-                <div className="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2">
-                  {availableSkills.map((skill) => (
-                    <div
-                      key={skill.id}
-                      className="flex items-start mb-2 border-b pb-2"
-                    >
-                      <input
-                        type="checkbox"
-                        id={`skill-edit-${skill.id}`}
-                        checked={selectedSkills.includes(skill.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedSkills([...selectedSkills, skill.id])
-                          } else {
-                            setSelectedSkills(
-                              selectedSkills.filter((id) => id !== skill.id)
-                            )
-                          }
-                        }}
-                        className="mr-2 mt-1"
-                      />
-                      <label
-                        htmlFor={`skill-edit-${skill.id}`}
-                        className="text-sm"
-                      >
-                        <div className="font-medium">
-                          {skill.name} ({skill.cost} pts)
-                        </div>
-                        <div className="text-xs italic text-gray-500">
-                          {skill.description}
-                        </div>
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            <div className="flex justify-between items-center mt-auto pt-4 border-t">
-              <div className="text-lg font-semibold">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 p-2 sm:p-4 border-t mt-auto bg-white">
+              <div className="text-base sm:text-lg font-semibold w-full sm:w-auto text-center sm:text-left">
                 Total Cost: {totalCost} points
               </div>
-              <div className="space-x-2">
+              <div className="flex w-full sm:w-auto gap-2">
                 <button
                   onClick={handleRemoveUnit}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                  className="flex-1 sm:flex-initial bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm hover:bg-red-700 transition-colors"
                 >
                   Remove Unit
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                  className="flex-1 sm:flex-initial bg-gray-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleUpdateUnit}
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                  className="flex-1 sm:flex-initial bg-green-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm hover:bg-green-700 transition-colors"
                 >
                   Update Unit
                 </button>
