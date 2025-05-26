@@ -167,7 +167,7 @@ const PlayModePage = () => {
         </div>
 
         {/* Main combat stats - always visible at the top */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-2 text-sm">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 text-sm">
           <div
             className={`${
               getRemainingVigor(selectedUnit.id) > 0
@@ -291,10 +291,6 @@ const PlayModePage = () => {
                 {calculateMovementValue(selectedUnit.armor)}in
               </span>
             </p>
-          </div>
-          <div className="bg-gray-100 p-2 rounded">
-            <p className="text-xs text-gray-500">Total Cost</p>
-            <p className="font-semibold">{selectedUnit.totalCost}</p>
           </div>
         </div>
 
