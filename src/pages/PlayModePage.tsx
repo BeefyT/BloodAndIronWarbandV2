@@ -337,7 +337,12 @@ const PlayModePage = () => {
                   key={armor.id}
                   className="border bg-white p-2 rounded shadow-sm"
                 >
-                  <h4 className="font-medium text-blue-800">{armor.name}</h4>
+                  <div className="flex justify-between items-center">
+                    <h4 className="font-medium text-blue-800">{armor.name}</h4>
+                    <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                      Armor {armor.armorValue}
+                    </span>
+                  </div>
                   <p className="text-xs mt-1">{armor.description}</p>
                 </div>
               ))}

@@ -593,6 +593,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Marksmen,Support,Gunner,Summoner,Ironclad,Eldritch,Hallowed,Operative'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'long-range'],
   },
   // Assault Pistol
   {
@@ -608,6 +609,7 @@ export const weapons: Weapon[] = [
       'Shock Trooper,Skirmisher,Operative'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'close-combat'],
   },
   // Heavy Machine Gun
   {
@@ -621,6 +623,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad'),
     factionRestriction: [],
+    categories: ['heavy-weapon', 'long-range', 'support-gear'],
   },
   // Submachine Gun
   {
@@ -636,6 +639,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'close-combat'],
   },
   // Long Rifle
   {
@@ -649,6 +653,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Marksmen,Operative'),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'long-range', 'anti-armor'],
   },
   // Revolver
   {
@@ -664,6 +669,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'close-combat'],
   },
   // Pistol
   {
@@ -677,6 +683,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'close-combat'],
   },
   // Storm Rifle
   {
@@ -692,6 +699,7 @@ export const weapons: Weapon[] = [
       'Shock Trooper,Gunner,Operative,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['heavy-weapon', 'ranged-weapon'],
   },
   // Autocannon
   {
@@ -705,6 +713,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad'),
     factionRestriction: [],
+    categories: ['heavy-weapon', 'long-range', 'explosive'],
   },
   // Trenchgun
   {
@@ -720,6 +729,7 @@ export const weapons: Weapon[] = [
       'Shock Trooper,Skirmisher,Operative'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'close-combat'],
   },
   // Flamethrower
   {
@@ -733,6 +743,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Shock Trooper,Gunner,Ironclad'),
     factionRestriction: [],
+    categories: ['heavy-weapon', 'close-combat'],
   },
   // Light Rocket Launcher
   {
@@ -748,6 +759,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Gunner,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['heavy-weapon', 'anti-armor', 'explosive'],
   },
   // Heavy Rocket Launcher
   {
@@ -761,6 +773,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad'),
     factionRestriction: [],
+    categories: ['heavy-weapon', 'anti-armor', 'explosive'],
   },
   // Grenade Launcher (Explosive)
   {
@@ -776,6 +789,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Gunner,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'explosive'],
   },
   // Grenade Launcher (Toxic)
   {
@@ -791,6 +805,7 @@ export const weapons: Weapon[] = [
       'Shock Trooper,Line Infantry,Skirmisher,Gunner,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'support-gear'],
   },
   // Grenade Launcher (Poison)
   {
@@ -806,6 +821,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Gunner,Ironclad'
     ),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'support-gear'],
   },
   // Bayonet
   {
@@ -819,6 +835,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Operative,Melee Specialist'
     ),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Greatsword
   {
@@ -832,6 +849,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Melee Specialist,Ironclad'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Longsword
   {
@@ -843,6 +861,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Melee,Parry'),
     unitRestriction: parseUnitRestrictions('Line Infantry'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Gauss Rifle
   {
@@ -854,6 +873,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('AP(2),Steady,Lock'),
     unitRestriction: parseUnitRestrictions('Marksmen,Gunner,Ironclad'),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'anti-armor', 'long-range'],
   },
   // Arc Rifle
   {
@@ -867,6 +887,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Support,Ironclad,Shock Trooper'),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'support-gear'],
   },
   // Trench Club
   {
@@ -880,6 +901,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Marksmen,Gunner,Support,Operative,Summoner,Melee Specialist'
     ),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Entrenching Tool
   {
@@ -893,6 +915,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher,Gunner'
     ),
     factionRestriction: [],
+    categories: ['melee-weapon', 'support-gear'],
   },
   // Bowie Knife
   {
@@ -904,6 +927,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Melee,Silenced,Savage(1),Backstab(1)'),
     unitRestriction: parseUnitRestrictions('Shock Trooper,Operative'),
     factionRestriction: [],
+    categories: ['melee-weapon', 'stealth-gear'],
   },
   // Knuckle Dusters
   {
@@ -915,6 +939,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Shove,Charge,Brutal,Melee'),
     unitRestriction: parseUnitRestrictions('Line Infantry,Shock Trooper'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Pickaxe
   {
@@ -928,6 +953,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Line Infantry,Gunner,Support'),
     factionRestriction: [],
+    categories: ['melee-weapon', 'anti-armor'],
   },
   // Barbwire Whip
   {
@@ -939,6 +965,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Bleed,Hooked,Reach,Melee'),
     unitRestriction: parseUnitRestrictions('Skirmisher,Operative,Support'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Axe
   {
@@ -950,6 +977,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('AP(1),Two Handed,Melee,Cleave'),
     unitRestriction: parseUnitRestrictions('Shock Trooper,Skirmisher'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Poleaxe
   {
@@ -961,6 +989,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Two Handed,Reach,AP(2),Brutal,Melee'),
     unitRestriction: parseUnitRestrictions('Melee Specialist'),
     factionRestriction: [],
+    categories: ['melee-weapon', 'anti-armor'],
   },
   // Halberd
   {
@@ -972,6 +1001,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Cleave,Two Handed,Reach,Melee'),
     unitRestriction: parseUnitRestrictions('Melee Specialist'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Macuahuitl
   {
@@ -983,6 +1013,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Bleed,Brutal,Savage(1),Melee'),
     unitRestriction: parseUnitRestrictions('Melee Specialist'),
     factionRestriction: [],
+    categories: ['melee-weapon', 'ritual-gear'],
   },
   // Serpent's Fang
   {
@@ -996,6 +1027,7 @@ export const weapons: Weapon[] = [
       'Operative,Summoner,Melee Specialist,Eldritch'
     ),
     factionRestriction: [],
+    categories: ['melee-weapon', 'ritual-gear'],
   },
   // Spineblade
   {
@@ -1009,6 +1041,7 @@ export const weapons: Weapon[] = [
       'Eldritch,Hallowed,Melee Specialist'
     ),
     factionRestriction: [],
+    categories: ['melee-weapon', 'ritual-gear'],
   },
   // Soulsplint Chakrams
   {
@@ -1020,6 +1053,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Returning,Swift,Bleed,Arc (2)'),
     unitRestriction: parseUnitRestrictions('Eldritch,Melee Specialist'),
     factionRestriction: [],
+    categories: ['melee-weapon', 'ritual-gear'],
   },
   // Trench Spear
   {
@@ -1033,6 +1067,7 @@ export const weapons: Weapon[] = [
       'Line Infantry,Shock Trooper,Skirmisher'
     ),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
   // Trench Sweeper
   {
@@ -1046,6 +1081,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad'),
     factionRestriction: [],
+    categories: ['ranged-weapon', 'close-combat'],
   },
   // Ripper Sawblade
   {
@@ -1057,6 +1093,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Brutal,Bleed,Two Handed,Melee'),
     unitRestriction: parseUnitRestrictions('Melee Specialist,Ironclad'),
     factionRestriction: [],
+    categories: ['melee-weapon'],
   },
 
   // Church of the Martyr weapons
@@ -1071,6 +1108,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Marksmen,Operative'),
     factionRestriction: getFactionByName('Church of the Martyr'),
+    categories: ['ranged-weapon', 'long-range'],
   },
   {
     id: 'sanctified-autocannon',
@@ -1083,6 +1121,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad'),
     factionRestriction: getFactionByName('Church of the Martyr'),
+    categories: ['heavy-weapon', 'long-range'],
   },
   {
     id: 'spear-of-saint-varro',
@@ -1093,6 +1132,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Melee,Reach,Smite,AP(2),Purge'),
     unitRestriction: parseUnitRestrictions('Hallowed,Melee Specialist'),
     factionRestriction: getFactionByName('Church of the Martyr'),
+    categories: ['melee-weapon', 'anti-armor'],
   },
   {
     id: 'saints-blood-maul',
@@ -1103,6 +1143,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Melee,Smite,Brutal,Stun(Eldritch)'),
     unitRestriction: parseUnitRestrictions('Hallowed,Melee Specialist'),
     factionRestriction: getFactionByName('Church of the Martyr'),
+    categories: ['melee-weapon'],
   },
   {
     id: 'purifier',
@@ -1115,6 +1156,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Shock Trooper,Gunner,Ironclad'),
     factionRestriction: getFactionByName('Church of the Martyr'),
+    categories: ['heavy-weapon', 'close-combat'],
   },
   {
     id: 'judges-pistol',
@@ -1125,6 +1167,7 @@ export const weapons: Weapon[] = [
     weaponKeywords: parseWeaponKeywords('Close Range,AP(2),Purge'),
     unitRestriction: parseUnitRestrictions('Shock Trooper,Operative,Hallowed'),
     factionRestriction: getFactionByName('Church of the Martyr'),
+    categories: ['ranged-weapon', 'close-combat', 'anti-armor'],
   },
 
   // Xiuhcoatl weapons
@@ -1139,6 +1182,7 @@ export const weapons: Weapon[] = [
       'Operative,Summoner,Melee Specialist'
     ),
     factionRestriction: getFactionByName('Xiuhcoatl'),
+    categories: ['melee-weapon', 'ritual-gear'],
   },
   {
     id: 'sun-eater-maw',
@@ -1151,6 +1195,7 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad,Eldritch'),
     factionRestriction: getFactionByName('Xiuhcoatl'),
+    categories: ['ranged-weapon', 'ritual-gear', 'long-range'],
   },
   {
     id: 'tezcatlipocas-gaze',
@@ -1163,10 +1208,42 @@ export const weapons: Weapon[] = [
     ),
     unitRestriction: parseUnitRestrictions('Summoner,Eldritch,Shock Trooper'),
     factionRestriction: getFactionByName('Xiuhcoatl'),
+    categories: ['ranged-weapon', 'ritual-gear', 'close-combat'],
   },
 ]
 
-export const armor: Armor[] = []
+export const armor: Armor[] = [
+  {
+    id: 'light-armor',
+    name: 'Light Armor',
+    cost: 3,
+    description:
+      'Basic protective gear that provides minimal protection while maintaining mobility.',
+    armorValue: 1,
+    unitRestriction: [], // Available to all unit types
+    categories: ['light-armor'],
+  },
+  {
+    id: 'medium-armor',
+    name: 'Medium Armor',
+    cost: 6,
+    description:
+      'Balanced protection offering good defense without severely hampering movement.',
+    armorValue: 2,
+    unitRestriction: [], // Available to all unit types
+    categories: ['medium-armor'],
+  },
+  {
+    id: 'heavy-armor',
+    name: 'Heavy Armor',
+    cost: 9,
+    description:
+      'Maximum protection at the cost of mobility. Provides excellent defense against most attacks.',
+    armorValue: 3,
+    unitRestriction: [], // Available to all unit types
+    categories: ['heavy-armor'],
+  },
+]
 
 export const equipmentItems: Equipment[] = [
   // GRENADES & EXPLOSIVES (SINGLE-USE)
@@ -1176,6 +1253,7 @@ export const equipmentItems: Equipment[] = [
     cost: 4,
     description: 'Template (Circle) - CP 2 to all in range.',
     unitRestriction: parseUnitRestrictions('Skirmisher,Line Infantry'),
+    categories: ['explosive'],
   },
   {
     id: 'emp-grenade',
@@ -1183,6 +1261,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'Stun (Mechanical) - Disables Diesel armor & mechs 1 turn.',
     unitRestriction: parseUnitRestrictions('Gunner,Ironclad'),
+    categories: ['support-gear'],
   },
   {
     id: 'flashbang',
@@ -1190,6 +1269,7 @@ export const equipmentItems: Equipment[] = [
     cost: 3,
     description: '-1 Competency to all in template for 1 round.',
     unitRestriction: parseUnitRestrictions('Skirmisher,Operative'),
+    categories: ['support-gear', 'stealth-gear'],
   },
   {
     id: 'bloodchoke-gas',
@@ -1197,6 +1277,7 @@ export const equipmentItems: Equipment[] = [
     cost: 6,
     description: 'Poison (1) - CP 1 per turn unless treated.',
     unitRestriction: parseUnitRestrictions('Operative,Eldritch'),
+    categories: ['support-gear', 'ritual-gear'],
   },
   {
     id: 'hellflame-satchel',
@@ -1204,6 +1285,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'Burn - CP 2 fire damage over time in area.',
     unitRestriction: parseUnitRestrictions('Shock Trooper,Gunner'),
+    categories: ['explosive'],
   },
   {
     id: 'rattler',
@@ -1211,6 +1293,7 @@ export const equipmentItems: Equipment[] = [
     cost: 3,
     description: 'Knockback (2") to all in range.',
     unitRestriction: parseUnitRestrictions('Line Infantry,Operative'),
+    categories: ['explosive'],
   },
   {
     id: 'smoke-canister',
@@ -1218,6 +1301,7 @@ export const equipmentItems: Equipment[] = [
     cost: 3,
     description: '6" cloud blocks LoS.',
     unitRestriction: parseUnitRestrictions('Skirmisher,Support'),
+    categories: ['support-gear', 'stealth-gear'],
   },
   {
     id: 'wire-nest',
@@ -1225,6 +1309,7 @@ export const equipmentItems: Equipment[] = [
     cost: 4,
     description: '6" difficult terrain; entering units suffer Bleed (1).',
     unitRestriction: parseUnitRestrictions('Support,Operative'),
+    categories: ['support-gear'],
   },
   {
     id: 'choke-smoke',
@@ -1232,6 +1317,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: '6" cloud inflicts Stupor (Organic).',
     unitRestriction: parseUnitRestrictions('Eldritch,Support'),
+    categories: ['support-gear', 'ritual-gear'],
   },
 
   // DEPLOYABLES & TRAPS (SINGLE-USE)
@@ -1241,6 +1327,7 @@ export const equipmentItems: Equipment[] = [
     cost: 6,
     description: '3" bubble: +1 Armor vs ranged for allies.',
     unitRestriction: parseUnitRestrictions('Support,Hallowed'),
+    categories: ['support-gear'],
   },
   {
     id: 'bouncing-reaper',
@@ -1248,6 +1335,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'CP 3 mine; explodes when enemy enters radius.',
     unitRestriction: parseUnitRestrictions('Gunner,Operative'),
+    categories: ['explosive', 'support-gear'],
   },
   {
     id: 'trenchwork',
@@ -1255,6 +1343,7 @@ export const equipmentItems: Equipment[] = [
     cost: 4,
     description: 'Deploys 6" of hard cover.',
     unitRestriction: parseUnitRestrictions('Support,Gunner'),
+    categories: ['support-gear'],
   },
   {
     id: 'watchers-eye',
@@ -1262,6 +1351,7 @@ export const equipmentItems: Equipment[] = [
     cost: 3,
     description: 'Reveals Stealth units within 8".',
     unitRestriction: parseUnitRestrictions('Marksmen,Support'),
+    categories: ['support-gear'],
   },
   {
     id: 'deadmans-teeth',
@@ -1269,6 +1359,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'CP 1 + -1 Competency for moving enemies.',
     unitRestriction: parseUnitRestrictions('Operative,Shock Trooper'),
+    categories: ['support-gear', 'stealth-gear'],
   },
   {
     id: 'scrambler',
@@ -1276,6 +1367,7 @@ export const equipmentItems: Equipment[] = [
     cost: 4,
     description: 'Slows Diesel/Ironclad movement by half.',
     unitRestriction: parseUnitRestrictions('Ironclad,Support'),
+    categories: ['support-gear'],
   },
   {
     id: 'watchmen',
@@ -1283,6 +1375,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'All units within 16" gain free Reface.',
     unitRestriction: parseUnitRestrictions('Support,Line Infantry'),
+    categories: ['support-gear'],
   },
 
   // TACTICAL GEAR (MULTI-USE, LIMITED CHARGES)
@@ -1292,6 +1385,7 @@ export const equipmentItems: Equipment[] = [
     cost: 6,
     description: 'Free 6" jump. (3 charges)',
     unitRestriction: parseUnitRestrictions('Skirmisher,Ironclad'),
+    categories: ['support-gear'],
   },
   {
     id: 'deadeye-visor',
@@ -1299,6 +1393,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: '+1 CP vs marked targets.',
     unitRestriction: parseUnitRestrictions('Marksmen'),
+    categories: ['support-gear'],
   },
   {
     id: 'blindspot-cloak',
@@ -1306,6 +1401,7 @@ export const equipmentItems: Equipment[] = [
     cost: 7,
     description: 'Gain Stealth for 1 round if out of LoS. (1 charge)',
     unitRestriction: parseUnitRestrictions('Operative,Skirmisher'),
+    categories: ['stealth-gear'],
   },
   {
     id: 'kickstarter',
@@ -1313,6 +1409,7 @@ export const equipmentItems: Equipment[] = [
     cost: 8,
     description: 'Auto-regain 1 Wound when reduced to 0. (1 charge)',
     unitRestriction: parseUnitRestrictions('Support,Hallowed'),
+    categories: ['medical'],
   },
   {
     id: 'accelerator',
@@ -1320,6 +1417,7 @@ export const equipmentItems: Equipment[] = [
     cost: 6,
     description: '1 free Attack/Reaction (no Vigor cost). (1 charge)',
     unitRestriction: parseUnitRestrictions('Shock Trooper,Operative'),
+    categories: ['support-gear'],
   },
   {
     id: 'resurge',
@@ -1327,6 +1425,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'Grants/stabilizes immunity to Stun (Mechanical). (1 charge)',
     unitRestriction: parseUnitRestrictions('Ironclad,Support'),
+    categories: ['support-gear'],
   },
   {
     id: 'noct-lens',
@@ -1334,6 +1433,7 @@ export const equipmentItems: Equipment[] = [
     cost: 4,
     description: 'Ignores concealment; see through smoke.',
     unitRestriction: parseUnitRestrictions('Marksmen,Support'),
+    categories: ['support-gear'],
   },
 
   // MEDICAL & SUPPORT (LIMITED HEALING USES)
@@ -1343,6 +1443,7 @@ export const equipmentItems: Equipment[] = [
     cost: 6,
     description: 'Restores 1 Wound. (2 uses)',
     unitRestriction: parseUnitRestrictions('Support,Hallowed'),
+    categories: ['medical'],
   },
   {
     id: 'stimpack',
@@ -1350,6 +1451,7 @@ export const equipmentItems: Equipment[] = [
     cost: 4,
     description: '+1 Vigor for 1 turn; -1 Competency next turn. (2 uses)',
     unitRestriction: parseUnitRestrictions('Support,Shock Trooper'),
+    categories: ['medical'],
   },
   {
     id: 'ironspanner-kit',
@@ -1357,6 +1459,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'Heals 1 Wound to Mechanical units. (2 uses)',
     unitRestriction: parseUnitRestrictions('Support,Ironclad'),
+    categories: ['medical', 'support-gear'],
   },
   {
     id: 'fleshstitch-serum',
@@ -1364,6 +1467,7 @@ export const equipmentItems: Equipment[] = [
     cost: 5,
     description: 'Regen 1 Wound at start of next activation. (1 use)',
     unitRestriction: parseUnitRestrictions('Eldritch,Support'),
+    categories: ['medical', 'ritual-gear'],
   },
   {
     id: 'numb-tonic',
@@ -1371,6 +1475,7 @@ export const equipmentItems: Equipment[] = [
     cost: 3,
     description: 'Reduce damage by 1 for 1 round. (1 use)',
     unitRestriction: parseUnitRestrictions('Hallowed,Support'),
+    categories: ['medical'],
   },
   {
     id: 'coagulant',
@@ -1378,6 +1483,7 @@ export const equipmentItems: Equipment[] = [
     cost: 2,
     description: 'Removes Bleed effect. (1 use)',
     unitRestriction: parseUnitRestrictions('Support'),
+    categories: ['medical'],
   },
   {
     id: 'venopurge',
@@ -1385,6 +1491,7 @@ export const equipmentItems: Equipment[] = [
     cost: 2,
     description: 'Removes Poison effect. (1 use)',
     unitRestriction: parseUnitRestrictions('Support'),
+    categories: ['medical'],
   },
   {
     id: 'hollowpoint-serum',
@@ -1392,5 +1499,6 @@ export const equipmentItems: Equipment[] = [
     cost: 3,
     description: 'Removes Fear effects. (1 use)',
     unitRestriction: parseUnitRestrictions('Hallowed,Support'),
+    categories: ['medical'],
   },
 ]

@@ -1,4 +1,4 @@
-import { Unit } from '../types'
+import { Unit } from '../types/index'
 
 export const units: Unit[] = [
   // Church of the Martyr Units
@@ -24,6 +24,7 @@ export const units: Unit[] = [
         cost: 0,
         description: 'Gains +1 Willpower when making Morale or Fear checks.',
         unitRestriction: ['Line Trooper'],
+        categories: ['morale', 'fear'],
       },
     ],
     totalCost: 20,
@@ -50,6 +51,7 @@ export const units: Unit[] = [
         cost: 0,
         description: 'After moving, gain +1 CP to melee attacks.',
         unitRestriction: ['Shock Trooper'],
+        categories: ['melee', 'movement', 'offensive'],
       },
       {
         id: 'blood-tithe',
@@ -58,6 +60,7 @@ export const units: Unit[] = [
         description:
           'When this unit kills an enemy in melee, it may immediately move without spending Vigor.',
         unitRestriction: ['Shock Trooper'],
+        categories: ['melee', 'movement', 'offensive'],
       },
     ],
     totalCost: 30,
@@ -85,6 +88,7 @@ export const units: Unit[] = [
         description:
           "If this unit doesn't move, when making a second attack, it may ignore the negative modifiers for multi-attacking.",
         unitRestriction: ['Gunner'],
+        categories: ['ranged', 'offensive'],
       },
       {
         id: 'shield-of-grace',
@@ -92,6 +96,7 @@ export const units: Unit[] = [
         cost: 0,
         description: 'While within 3" of an ally, gain +1 Armor.',
         unitRestriction: ['Gunner'],
+        categories: ['defensive', 'support'],
       },
     ],
     totalCost: 30,
@@ -118,6 +123,7 @@ export const units: Unit[] = [
         cost: 0,
         description: 'Ignores the first Status Effect suffered each round.',
         unitRestriction: ['Melee Specialist'],
+        categories: ['defensive'],
       },
       {
         id: 'saints-wrath',
@@ -126,6 +132,7 @@ export const units: Unit[] = [
         description:
           'When this unit takes damage, it may immediately make a melee attack before damage is applied. If this reactive attack kills the attacker, the incoming damage is negated.',
         unitRestriction: ['Melee Specialist'],
+        categories: ['melee', 'defensive', 'offensive'],
       },
       {
         id: 'favored-of-the-martyr',
@@ -134,6 +141,7 @@ export const units: Unit[] = [
         description:
           'Once per game, this unit may activate a Miracle effect without having fulfilled their Vow. The effect lasts until the end of the turn.',
         unitRestriction: ['Melee Specialist'],
+        categories: ['ritual', 'support'],
       },
     ],
     totalCost: 45,
@@ -160,6 +168,7 @@ export const units: Unit[] = [
         cost: 0,
         description: 'Allies within 6" gain +1 Willpower on Morale checks.',
         unitRestriction: ['Support'],
+        categories: ['morale', 'support'],
       },
       {
         id: 'divine-invocation',
@@ -168,6 +177,7 @@ export const units: Unit[] = [
         description:
           'Miracle: Spend 1 Vigor to grant a nearby ally within 6" +1 CP on their next attack.',
         unitRestriction: ['Support'],
+        categories: ['ritual', 'support', 'offensive'],
       },
     ],
     totalCost: 25,
@@ -196,6 +206,7 @@ export const units: Unit[] = [
         description:
           'If this unit is killed within 8" of a Summoner or Ritualist, generate +1 Ritual Token.',
         unitRestriction: ['Line Trooper'],
+        categories: ['ritual'],
       },
       {
         id: 'expendable',
@@ -204,6 +215,7 @@ export const units: Unit[] = [
         description:
           'If a friendly unit within 8" would take damage, this unit may use its reaction to take the damage instead.',
         unitRestriction: ['Line Trooper'],
+        categories: ['defensive'],
       },
       {
         id: 'sacrificial',
@@ -212,6 +224,7 @@ export const units: Unit[] = [
         description:
           'This unit is a component of powerful rituals. When this unit dies, each unit with the Ritualist tag gains 1 Ritual Token. If a unit with the Ritualist tag is within 8in, instead that unit gains 1d3 Ritual Tokens.',
         unitRestriction: ['Line Trooper', 'Skirmisher'],
+        categories: ['ritual'],
       },
     ],
     totalCost: 15,
@@ -239,6 +252,7 @@ export const units: Unit[] = [
         description:
           'Once per round, this unit may reroll a failed summoning attempt within 8".',
         unitRestriction: ['Summoner', 'Support'],
+        categories: ['ritual'],
       },
       {
         id: 'ritualist',
@@ -247,6 +261,7 @@ export const units: Unit[] = [
         description:
           'When this unit kills a unit with the Sacrificial tag, generate 1d3 Ritual Tokens.',
         unitRestriction: ['Summoner', 'Support'],
+        categories: ['ritual'],
       },
       {
         id: 'summoner',
@@ -255,6 +270,7 @@ export const units: Unit[] = [
         description:
           'This unit may attempt to summon eldritch or spiritual beings using the Summoning rules.',
         unitRestriction: ['Summoner'],
+        categories: ['ritual'],
       },
       {
         id: 'tactical-coordination',
@@ -263,6 +279,7 @@ export const units: Unit[] = [
         description:
           'May grant a nearby friendly unit a free non-attack action.',
         unitRestriction: ['Support'],
+        categories: ['coordination', 'support'],
       },
     ],
     totalCost: 30,
@@ -290,6 +307,7 @@ export const units: Unit[] = [
         description:
           'At the start of the game, select 1 allied Ritualist. When this unit uses Guardian to intercept an attack for them: After damage is resolved, roll 1d10 per wound taken. On a 6+, ignore the wound. This unit gains +1 CP on its next attack.',
         unitRestriction: ['Melee Specialist'],
+        categories: ['defensive', 'ritual'],
       },
       {
         id: 'guardian-ritualist',
@@ -298,6 +316,7 @@ export const units: Unit[] = [
         description:
           'When an allied Ritualist within 8" is targeted, this unit may react to intercept the attack.',
         unitRestriction: ['Melee Specialist'],
+        categories: ['defensive', 'support'],
       },
       {
         id: 'combat-reflex',
@@ -306,6 +325,7 @@ export const units: Unit[] = [
         description:
           'Once per round, may perform an additional reaction without spending Vigor.',
         unitRestriction: ['Melee Specialist'],
+        categories: ['defensive', 'offensive'],
       },
     ],
     totalCost: 35,
@@ -333,6 +353,7 @@ export const units: Unit[] = [
         description:
           'At the start of this unit\'s activation, all units within 3" suffer 1 Wound.',
         unitRestriction: ['Gunner'],
+        categories: ['fear', 'offensive'],
       },
       {
         id: 'ascendant-bloom',
@@ -341,6 +362,7 @@ export const units: Unit[] = [
         description:
           'When a Sacrificial unit dies within 8", generate 1 Ritual Token. You may spend Ritual Tokens to gain +1 CP (max +3) on your next attack.',
         unitRestriction: ['Gunner'],
+        categories: ['ritual', 'offensive'],
       },
       {
         id: 'disciplined-advance',
@@ -349,6 +371,7 @@ export const units: Unit[] = [
         description:
           'This unit suffers no movement penalties when moving through difficult terrain.',
         unitRestriction: ['Gunner'],
+        categories: ['movement'],
       },
     ],
     totalCost: 40,

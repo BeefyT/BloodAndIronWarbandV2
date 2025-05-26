@@ -153,6 +153,7 @@ function compressArmor(armor: Armor): CompressedArmor {
     [KEYS.itemId]: armor.id,
     [KEYS.itemName]: armor.name,
     [KEYS.cost]: armor.cost,
+    armorValue: armor.armorValue,
   }
 }
 
@@ -257,6 +258,7 @@ function expandWeapon(compressed: CompressedWeapon): Weapon {
     })), // Basic reconstruction that will be enhanced later
     unitRestriction: [],
     factionRestriction: [],
+    categories: [],
   }
 }
 
@@ -271,7 +273,9 @@ function expandArmor(compressed: CompressedArmor): Armor {
     name: compressed[KEYS.itemName] as string,
     cost: compressed[KEYS.cost] as number,
     description: '',
+    armorValue: compressed.armorValue as number,
     unitRestriction: [],
+    categories: [],
   }
 }
 
@@ -287,6 +291,7 @@ function expandEquipment(compressed: CompressedEquipment): Equipment {
     cost: compressed[KEYS.cost] as number,
     description: '',
     unitRestriction: [],
+    categories: [],
   }
 }
 
@@ -302,6 +307,7 @@ function expandSkill(compressed: CompressedSkill): Skill {
     cost: compressed[KEYS.cost] as number,
     description: '',
     unitRestriction: [],
+    categories: [],
   }
 }
 

@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { useAppStore } from '../pages/store'
-import { Unit } from '../types'
-import { units } from '../data/units'
-import { weapons, armor, equipmentItems } from '../data/equipment'
-import { skills } from '../data/skills'
-import { toast } from 'sonner'
 import {
+  Unit,
   filterAvailableWeapons,
   filterAvailableArmor,
   filterAvailableEquipment,
   filterAvailableSkills,
 } from '../types'
+import { units } from '../data/units'
+import { weapons, armor, equipmentItems } from '../data/equipment'
+import { skills } from '../data/skills'
+import {
+  getSkillCostForFaction,
+  getWeaponCostForFaction,
+  getArmorCostForFaction,
+  getEquipmentCostForFaction,
+} from '../utils/factionCosts'
+import { toast } from 'sonner'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import {
   Tooltip,
@@ -37,6 +43,7 @@ const UnitBuilder = () => {
 
   // Calculate restriction limits
   const maxWeapons = 2
+  const maxArmor = 1
   const maxSkills = currentUnitInProgress?.willpower || 0
   const maxEquipment = currentUnitInProgress?.resilience || 0
 
@@ -80,25 +87,29 @@ const UnitBuilder = () => {
     // Add weapon costs
     selectedWeapons.forEach((id) => {
       const weapon = weapons.find((w) => w.id === id)
-      if (weapon) cost += weapon.cost
+      if (weapon)
+        cost += getWeaponCostForFaction(weapon, selectedFaction?.id || '')
     })
 
     // Add armor costs
     selectedArmor.forEach((id) => {
       const armorItem = armor.find((a) => a.id === id)
-      if (armorItem) cost += armorItem.cost
+      if (armorItem)
+        cost += getArmorCostForFaction(armorItem, selectedFaction?.id || '')
     })
 
     // Add equipment costs
     selectedEquipment.forEach((id) => {
       const equipment = equipmentItems.find((e) => e.id === id)
-      if (equipment) cost += equipment.cost
+      if (equipment)
+        cost += getEquipmentCostForFaction(equipment, selectedFaction?.id || '')
     })
 
     // Add skill costs
     selectedSkills.forEach((id) => {
       const skill = skills.find((s) => s.id === id)
-      if (skill) cost += skill.cost
+      if (skill)
+        cost += getSkillCostForFaction(skill, selectedFaction?.id || '')
     })
 
     setTotalCost(cost)
@@ -108,6 +119,7 @@ const UnitBuilder = () => {
     selectedArmor,
     selectedEquipment,
     selectedSkills,
+    selectedFaction,
   ])
 
   const resetForm = () => {
@@ -155,6 +167,22 @@ const UnitBuilder = () => {
       }
     } else {
       setSelectedWeapons(selectedWeapons.filter((id) => id !== weaponId))
+    }
+  }
+
+  // Handle armor selection with limit
+  const handleArmorChange = (armorId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedArmor.length < maxArmor) {
+        setSelectedArmor([...selectedArmor, armorId])
+      } else {
+        toast.warning(`Maximum of ${maxArmor} armor allowed`, {
+          description: 'Remove armor before adding another',
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedArmor(selectedArmor.filter((id) => id !== armorId))
     }
   }
 
@@ -287,6 +315,9 @@ const UnitBuilder = () => {
                   Max Weapons: {selectedWeapons.length}/{maxWeapons}
                 </div>
                 <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
+                  Max Armor: {selectedArmor.length}/{maxArmor}
+                </div>
+                <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
                   Max Equipment: {selectedEquipment.length}/{maxEquipment}
                 </div>
                 <div className="bg-blue-100 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs">
@@ -310,7 +341,7 @@ const UnitBuilder = () => {
                       value="armor"
                       className="text-white bg-gray-700 hover:bg-gray-800"
                     >
-                      Armor
+                      Armor ({selectedArmor.length}/{maxArmor})
                     </TabsTrigger>
                     <TabsTrigger
                       value="equipment"
@@ -357,7 +388,12 @@ const UnitBuilder = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {weapon.name} ({weapon.cost} pts)
+                            {weapon.name} (
+                            {getWeaponCostForFaction(
+                              weapon,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs text-gray-600">
                             CP: {weapon.combatPower}
@@ -414,23 +450,27 @@ const UnitBuilder = () => {
                           type="checkbox"
                           id={`armor-${item.id}`}
                           checked={selectedArmor.includes(item.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedArmor([...selectedArmor, item.id])
-                            } else {
-                              setSelectedArmor(
-                                selectedArmor.filter((id) => id !== item.id)
-                              )
-                            }
-                          }}
+                          onChange={(e) =>
+                            handleArmorChange(item.id, e.target.checked)
+                          }
                           className="mr-2 mt-0.5 sm:mt-1"
                         />
                         <label
                           htmlFor={`armor-${item.id}`}
-                          className="text-xs sm:text-sm"
+                          className={`text-xs sm:text-sm ${
+                            !selectedArmor.includes(item.id) &&
+                            selectedArmor.length >= maxArmor
+                              ? 'text-gray-400'
+                              : ''
+                          }`}
                         >
                           <div className="font-medium">
-                            {item.name} ({item.cost} pts)
+                            {item.name} - Armor {item.armorValue} (
+                            {getArmorCostForFaction(
+                              item,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs italic text-gray-500 hidden sm:block">
                             {item.description}
@@ -471,7 +511,12 @@ const UnitBuilder = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {item.name} ({item.cost} pts)
+                            {item.name} (
+                            {getEquipmentCostForFaction(
+                              item,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs italic text-gray-500 hidden sm:block">
                             {item.description}
@@ -512,7 +557,12 @@ const UnitBuilder = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {skill.name} ({skill.cost} pts)
+                            {skill.name} (
+                            {getSkillCostForFaction(
+                              skill,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs italic text-gray-500 hidden sm:block">
                             {skill.description}

@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useAppStore } from '../pages/store'
-import { Unit } from '../types'
+import {
+  Unit,
+  filterAvailableWeapons,
+  filterAvailableArmor,
+  filterAvailableEquipment,
+  filterAvailableSkills,
+} from '../types'
 import { weapons, armor, equipmentItems } from '../data/equipment'
 import { skills } from '@/data/skills'
+import {
+  getSkillCostForFaction,
+  getWeaponCostForFaction,
+  getArmorCostForFaction,
+  getEquipmentCostForFaction,
+} from '../utils/factionCosts'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import {
   Tooltip,
@@ -10,15 +22,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { toast } from 'sonner'
-import {
-  filterAvailableWeapons,
-  filterAvailableArmor,
-  filterAvailableEquipment,
-  filterAvailableSkills,
-} from '../types'
 
 const WarbandEditor = () => {
-  const { currentWarband, updateUnit, removeUnitFromWarband } = useAppStore()
+  const { currentWarband, updateUnit, removeUnitFromWarband, selectedFaction } =
+    useAppStore()
 
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null)
   const [unitName, setUnitName] = useState('')
@@ -34,6 +41,7 @@ const WarbandEditor = () => {
 
   // Calculate restriction limits
   const maxWeapons = 2
+  const maxArmor = 1
   const maxSkills = selectedUnit?.willpower || 0
   const maxEquipment = selectedUnit?.resilience || 0
 
@@ -78,25 +86,29 @@ const WarbandEditor = () => {
     // Add weapon costs
     selectedWeapons.forEach((id) => {
       const weapon = weapons.find((w) => w.id === id)
-      if (weapon) cost += weapon.cost
+      if (weapon)
+        cost += getWeaponCostForFaction(weapon, selectedFaction?.id || '')
     })
 
     // Add armor costs
     selectedArmor.forEach((id) => {
       const armorItem = armor.find((a) => a.id === id)
-      if (armorItem) cost += armorItem.cost
+      if (armorItem)
+        cost += getArmorCostForFaction(armorItem, selectedFaction?.id || '')
     })
 
     // Add equipment costs
     selectedEquipment.forEach((id) => {
       const equipment = equipmentItems.find((e) => e.id === id)
-      if (equipment) cost += equipment.cost
+      if (equipment)
+        cost += getEquipmentCostForFaction(equipment, selectedFaction?.id || '')
     })
 
     // Add skill costs
     selectedSkills.forEach((id) => {
       const skill = skills.find((s) => s.id === id)
-      if (skill) cost += skill.cost
+      if (skill)
+        cost += getSkillCostForFaction(skill, selectedFaction?.id || '')
     })
 
     setTotalCost(cost)
@@ -107,6 +119,7 @@ const WarbandEditor = () => {
     selectedArmor,
     selectedEquipment,
     selectedSkills,
+    selectedFaction,
   ])
 
   const resetForm = () => {
@@ -163,6 +176,22 @@ const WarbandEditor = () => {
       }
     } else {
       setSelectedWeapons(selectedWeapons.filter((id) => id !== weaponId))
+    }
+  }
+
+  // Handle armor selection with limit
+  const handleArmorChange = (armorId: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedArmor.length < maxArmor) {
+        setSelectedArmor([...selectedArmor, armorId])
+      } else {
+        toast.warning(`Maximum of ${maxArmor} armor allowed`, {
+          description: 'Remove armor before adding another',
+          duration: 3000,
+        })
+      }
+    } else {
+      setSelectedArmor(selectedArmor.filter((id) => id !== armorId))
     }
   }
 
@@ -320,7 +349,7 @@ const WarbandEditor = () => {
                       value="armor"
                       className="text-white bg-gray-700 hover:bg-gray-800"
                     >
-                      Armor
+                      Armor ({selectedArmor.length}/{maxArmor})
                     </TabsTrigger>
                     <TabsTrigger
                       value="equipment"
@@ -367,7 +396,12 @@ const WarbandEditor = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {weapon.name} ({weapon.cost} pts)
+                            {weapon.name} (
+                            {getWeaponCostForFaction(
+                              weapon,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs text-gray-600">
                             CP: {weapon.combatPower}
@@ -424,23 +458,27 @@ const WarbandEditor = () => {
                           type="checkbox"
                           id={`armor-edit-${item.id}`}
                           checked={selectedArmor.includes(item.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedArmor([...selectedArmor, item.id])
-                            } else {
-                              setSelectedArmor(
-                                selectedArmor.filter((id) => id !== item.id)
-                              )
-                            }
-                          }}
+                          onChange={(e) =>
+                            handleArmorChange(item.id, e.target.checked)
+                          }
                           className="mr-2 mt-0.5 sm:mt-1"
                         />
                         <label
                           htmlFor={`armor-edit-${item.id}`}
-                          className="text-xs sm:text-sm"
+                          className={`text-xs sm:text-sm ${
+                            !selectedArmor.includes(item.id) &&
+                            selectedArmor.length >= maxArmor
+                              ? 'text-gray-400'
+                              : ''
+                          }`}
                         >
                           <div className="font-medium">
-                            {item.name} ({item.cost} pts)
+                            {item.name} - Armor {item.armorValue} (
+                            {getArmorCostForFaction(
+                              item,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs italic text-gray-500 hidden sm:block">
                             {item.description}
@@ -481,7 +519,12 @@ const WarbandEditor = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {item.name} ({item.cost} pts)
+                            {item.name} (
+                            {getEquipmentCostForFaction(
+                              item,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs italic text-gray-500 hidden sm:block">
                             {item.description}
@@ -522,7 +565,12 @@ const WarbandEditor = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {skill.name} ({skill.cost} pts)
+                            {skill.name} (
+                            {getSkillCostForFaction(
+                              skill,
+                              selectedFaction?.id || ''
+                            )}{' '}
+                            pts)
                           </div>
                           <div className="text-xs italic text-gray-500 hidden sm:block">
                             {skill.description}

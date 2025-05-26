@@ -4,6 +4,47 @@ export interface Faction {
   description: string
 }
 
+// Categories for skills to enable faction-based cost modifiers
+export type SkillCategory =
+  | 'stealth'
+  | 'defensive'
+  | 'offensive'
+  | 'support'
+  | 'movement'
+  | 'melee'
+  | 'ranged'
+  | 'medical'
+  | 'fear'
+  | 'ritual'
+  | 'morale'
+  | 'coordination'
+
+// Categories for equipment to enable faction-based cost modifiers
+export type EquipmentCategory =
+  | 'heavy-armor'
+  | 'light-armor'
+  | 'medium-armor'
+  | 'stealth-gear'
+  | 'medical'
+  | 'explosive'
+  | 'melee-weapon'
+  | 'ranged-weapon'
+  | 'heavy-weapon'
+  | 'support-gear'
+  | 'ritual-gear'
+  | 'close-combat'
+  | 'long-range'
+  | 'anti-armor'
+
+// Faction-based cost modifiers
+export interface FactionModifier {
+  factionId: string
+  name: string
+  description: string
+  skillModifiers: Partial<Record<SkillCategory, number>>
+  equipmentModifiers: Partial<Record<EquipmentCategory, number>>
+}
+
 export type UnitType =
   | 'Line Trooper'
   | 'Shock Trooper'
@@ -27,6 +68,7 @@ export interface Weapon {
   weaponKeywords: WeaponKeyword[]
   unitRestriction: UnitType[]
   factionRestriction: Faction[]
+  categories: EquipmentCategory[]
 }
 
 export interface WeaponKeyword {
@@ -41,7 +83,9 @@ export interface Armor {
   name: string
   cost: number
   description: string
+  armorValue: number
   unitRestriction: UnitType[]
+  categories: EquipmentCategory[]
 }
 
 export interface Equipment {
@@ -50,6 +94,7 @@ export interface Equipment {
   cost: number
   description: string
   unitRestriction: UnitType[]
+  categories: EquipmentCategory[]
 }
 
 export interface Skill {
@@ -58,6 +103,7 @@ export interface Skill {
   cost: number
   description: string
   unitRestriction: UnitType[]
+  categories: SkillCategory[]
 }
 
 export interface Unit {
