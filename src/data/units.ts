@@ -399,6 +399,7 @@ export const units: Unit[] = [
         description:
           'Spend 1 Ritual Token to teleport up to 8" to a location out of line of sight. Cannot end within 2" of an enemy.',
         unitRestriction: ['Skirmisher'],
+        categories: ['ritual', 'movement'],
       },
       {
         id: 'soul-unraveling',
@@ -407,6 +408,7 @@ export const units: Unit[] = [
         description:
           'Spend 1 Ritual Token to ignore all Armor. Critical hits deal +1 damage.',
         unitRestriction: ['Skirmisher'],
+        categories: ['ritual', 'offensive'],
       },
     ],
     totalCost: 35,
@@ -434,6 +436,7 @@ export const units: Unit[] = [
         description:
           'Once per game, this unit may sacrifice itself to attempt a power-augmented summoning. When doing so: The summoning roll gains +3. If the summoning fails, the summoned creature automatically manifests as hostile, following the Hostile Manifestation AI rules. The Votive-Mouth is immediately removed from play.',
         unitRestriction: ['Summoner'],
+        categories: ['ritual'],
       },
       {
         id: 'echo-of-intention',
@@ -442,6 +445,7 @@ export const units: Unit[] = [
         description:
           'If this unit fails a normal summoning roll, generate 1 Ritual Token.',
         unitRestriction: ['Summoner'],
+        categories: ['ritual'],
       },
       {
         id: 'ritualist',
@@ -450,6 +454,7 @@ export const units: Unit[] = [
         description:
           'When this unit kills a unit with the Sacrificial tag, generate 1d3 Ritual Tokens.',
         unitRestriction: ['Summoner'],
+        categories: ['ritual'],
       },
     ],
     totalCost: 20,
