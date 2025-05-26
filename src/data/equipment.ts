@@ -1220,6 +1220,7 @@ export const armor: Armor[] = [
     description:
       'Basic protective gear that provides minimal protection while maintaining mobility.',
     armorValue: 1,
+    movementPenalty: 0,
     unitRestriction: [], // Available to all unit types
     categories: ['light-armor'],
   },
@@ -1230,6 +1231,7 @@ export const armor: Armor[] = [
     description:
       'Balanced protection offering good defense without severely hampering movement.',
     armorValue: 2,
+    movementPenalty: -1,
     unitRestriction: [], // Available to all unit types
     categories: ['medium-armor'],
   },
@@ -1240,6 +1242,7 @@ export const armor: Armor[] = [
     description:
       'Maximum protection at the cost of mobility. Provides excellent defense against most attacks.',
     armorValue: 3,
+    movementPenalty: -2,
     unitRestriction: [], // Available to all unit types
     categories: ['heavy-armor'],
   },

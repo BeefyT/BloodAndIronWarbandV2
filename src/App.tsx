@@ -14,6 +14,7 @@ import LoadDialog from './components/LoadDialog'
 import SaveDialog from './components/SaveDialog'
 import ImportDialog from './components/ImportDialog'
 import ExportDialog from './components/ExportDialog'
+import PrintDialog from './components/PrintDialog'
 import { Toaster } from './components/ui/sonner'
 
 function Header() {
@@ -25,10 +26,12 @@ function Header() {
     toggleLoadDialog,
     toggleImportDialog,
     toggleExportDialog,
+    togglePrintDialog,
     isLoadDialogOpen,
     isSaveDialogOpen,
     isImportDialogOpen,
     isExportDialogOpen,
+    isPrintDialogOpen,
   } = useAppStore()
 
   const isBuilderPage = location.pathname === '/builder'
@@ -80,6 +83,14 @@ function Header() {
             >
               Export
             </button>
+            <button
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-gray-600 rounded hover:bg-gray-700 text-white text-sm sm:text-base"
+              onClick={togglePrintDialog}
+              disabled={!currentWarband}
+              aria-label="Print warband"
+            >
+              Print
+            </button>
           </div>
         )}
       </div>
@@ -88,6 +99,7 @@ function Header() {
       {isSaveDialogOpen && <SaveDialog />}
       {isImportDialogOpen && <ImportDialog />}
       {isExportDialogOpen && <ExportDialog />}
+      {isPrintDialogOpen && <PrintDialog />}
     </header>
   )
 }

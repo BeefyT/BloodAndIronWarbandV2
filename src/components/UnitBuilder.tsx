@@ -465,7 +465,14 @@ const UnitBuilder = () => {
                           }`}
                         >
                           <div className="font-medium">
-                            {item.name} - Armor {item.armorValue} (
+                            {item.name} - Armor {item.armorValue}
+                            {item.movementPenalty !== 0 && (
+                              <span className="text-red-600">
+                                {' '}
+                                (Movement {6 + item.movementPenalty}in)
+                              </span>
+                            )}{' '}
+                            (
                             {getArmorCostForFaction(
                               item,
                               selectedFaction?.id || ''

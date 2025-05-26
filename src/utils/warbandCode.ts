@@ -154,6 +154,7 @@ function compressArmor(armor: Armor): CompressedArmor {
     [KEYS.itemName]: armor.name,
     [KEYS.cost]: armor.cost,
     armorValue: armor.armorValue,
+    movementPenalty: armor.movementPenalty,
   }
 }
 
@@ -274,6 +275,7 @@ function expandArmor(compressed: CompressedArmor): Armor {
     cost: compressed[KEYS.cost] as number,
     description: '',
     armorValue: compressed.armorValue as number,
+    movementPenalty: compressed.movementPenalty as number,
     unitRestriction: [],
     categories: [],
   }

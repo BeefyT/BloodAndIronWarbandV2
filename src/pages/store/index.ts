@@ -24,6 +24,7 @@ interface AppState {
   isSaveDialogOpen: boolean
   isImportDialogOpen: boolean
   isExportDialogOpen: boolean
+  isPrintDialogOpen: boolean
 
   // Actions
   selectFaction: (factionId: string) => void
@@ -42,6 +43,7 @@ interface AppState {
   toggleSaveDialog: () => void
   toggleImportDialog: () => void
   toggleExportDialog: () => void
+  togglePrintDialog: () => void
   importWarbandFromImport: (warband: Warband) => void
 }
 
@@ -60,6 +62,7 @@ export const useAppStore = create<AppState>()(
       isSaveDialogOpen: false,
       isImportDialogOpen: false,
       isExportDialogOpen: false,
+      isPrintDialogOpen: false,
 
       // Actions
       selectFaction: (factionId: string) => {
@@ -265,6 +268,16 @@ export const useAppStore = create<AppState>()(
           isLoadDialogOpen: false,
           isSaveDialogOpen: false,
           isImportDialogOpen: false,
+        }))
+      },
+
+      togglePrintDialog: () => {
+        set((state) => ({
+          isPrintDialogOpen: !state.isPrintDialogOpen,
+          isLoadDialogOpen: false,
+          isSaveDialogOpen: false,
+          isImportDialogOpen: false,
+          isExportDialogOpen: false,
         }))
       },
 

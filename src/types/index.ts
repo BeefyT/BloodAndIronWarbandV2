@@ -84,6 +84,7 @@ export interface Armor {
   cost: number
   description: string
   armorValue: number
+  movementPenalty: number
   unitRestriction: UnitType[]
   categories: EquipmentCategory[]
 }
@@ -200,4 +201,18 @@ export function filterAvailableSkills(
   unitType: UnitType
 ): Skill[] {
   return skills.filter((skill) => isSkillAvailableForUnit(skill, unitType))
+}
+
+// Utility function to calculate total movement penalty from armor
+export function calculateMovementPenalty(armor: Armor[]): number {
+  return armor.reduce(
+    (total, armorPiece) => total + armorPiece.movementPenalty,
+    0
+  )
+}
+
+// Utility function to calculate actual movement value (base 6 minus penalties)
+export function calculateMovementValue(armor: Armor[]): number {
+  const penalty = calculateMovementPenalty(armor)
+  return 6 + penalty // penalty is negative, so this subtracts from 6
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from './store'
-import { Unit } from '../types'
+import { Unit, calculateMovementValue } from '../types'
 import { Button } from '../components/ui/button'
 
 // Type for tracking unit vigor
@@ -167,7 +167,7 @@ const PlayModePage = () => {
         </div>
 
         {/* Main combat stats - always visible at the top */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-sm">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-2 text-sm">
           <div
             className={`${
               getRemainingVigor(selectedUnit.id) > 0
@@ -270,6 +270,29 @@ const PlayModePage = () => {
             <p className="font-semibold">{selectedUnit.willpower}</p>
           </div>
           <div className="bg-gray-100 p-2 rounded">
+            <p className="text-xs text-gray-500">Armor</p>
+            <p className="font-semibold">
+              {selectedUnit.armor.reduce(
+                (total, armor) => total + armor.armorValue,
+                0
+              )}
+            </p>
+          </div>
+          <div className="bg-gray-100 p-2 rounded">
+            <p className="text-xs text-gray-500">Movement</p>
+            <p className="font-semibold">
+              <span
+                className={
+                  calculateMovementValue(selectedUnit.armor) < 6
+                    ? 'text-red-600'
+                    : ''
+                }
+              >
+                {calculateMovementValue(selectedUnit.armor)}in
+              </span>
+            </p>
+          </div>
+          <div className="bg-gray-100 p-2 rounded">
             <p className="text-xs text-gray-500">Total Cost</p>
             <p className="font-semibold">{selectedUnit.totalCost}</p>
           </div>
@@ -297,8 +320,6 @@ const PlayModePage = () => {
                       CP: {weapon.combatPower}
                     </span>
                   </div>
-                  <p className="text-xs mb-1">{weapon.description}</p>
-
                   {weapon.weaponKeywords.length > 0 && (
                     <div className="mt-1 bg-gray-50 p-1 rounded border text-xs">
                       <div className="space-y-1">
@@ -339,11 +360,17 @@ const PlayModePage = () => {
                 >
                   <div className="flex justify-between items-center">
                     <h4 className="font-medium text-blue-800">{armor.name}</h4>
-                    <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">
-                      Armor {armor.armorValue}
-                    </span>
+                    <div className="flex gap-2">
+                      <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                        Armor {armor.armorValue}
+                      </span>
+                      {armor.movementPenalty !== 0 && (
+                        <span className="text-xs bg-red-100 text-red-800 px-1 rounded">
+                          Movement {6 + armor.movementPenalty}in
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-xs mt-1">{armor.description}</p>
                 </div>
               ))}
             </div>
